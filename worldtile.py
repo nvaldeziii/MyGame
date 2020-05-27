@@ -1,0 +1,26 @@
+import pygame
+from sprite import Sprite
+from grid import Grid
+
+
+class WorldTile:
+    pass
+
+class Tile(Sprite):
+    def __init__(self, surface):
+        self.tile_w = 100
+        self.tile_h = 50
+
+        Sprite.__init__(self, surface=surface, w=self.tile_w, h=self.tile_h)
+
+    def draw(self):
+        tile = pygame.image.load('sprites/tile/sample.png')
+        for x in range(0, 10):
+            for y in range(0, 10):
+                self.update_coordinate(x, y)
+                self.surface.blit(
+                    tile, (
+                        self.pixel_x - (self.tile_w / 2),
+                        self.pixel_y - (self.tile_h / 2)
+                    )
+                )

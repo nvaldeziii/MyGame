@@ -43,12 +43,13 @@ def mouse_listener(keys):
             movement = engine.player.player_move(engine.mouse_pos)
             engine.player.delta_xy_coordinate(movement[0], movement[1])
 
+
 while True:
     # https://www.pygame.org/docs/ref/time.html#pygame.time.Clock.tick
     clock.tick(60)
 
     pygame.display.set_caption(
-        f"fps: {str(clock.get_fps())}, mouse: {engine.mouse_pos}")
+        f"fps: {str(clock.get_fps())}")
     # pygame.time.delay(1000)
     # logging.debug(f"tick ({tick})")
 
@@ -72,5 +73,6 @@ while True:
 
     grid.debug_obj.update({'player': engine.player.param})
     grid.debug_obj.update({'player_debug': engine.player.debug_obj})
+    grid.debug_obj.update({'mouse': {'pos': engine.mouse_pos}})
     grid.draw()
     pygame.display.update()

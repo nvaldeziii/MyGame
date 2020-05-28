@@ -5,53 +5,41 @@ from grid import Grid
 class Sprite:
     def __init__(self, surface=None, x_coordinate=0, y_coordinate=0, w=64, h=64):
         self.surface = surface
-        self.x_coordinate = x_coordinate
-        self.y_coordinate = y_coordinate
-        self.w = w
-        self.h = h
+        self.param = {
+            'x_coordinate': x_coordinate,
+            'y_coordinate': y_coordinate,
+            'old_coordinate': (0,0),
+            'w': w,
+            'h': h,
+            'ready': True,
+            'x_final': 0,
+            'y_final': 0,
+            'pixel_x': 0,
+            'pixel_y': 0
+        }
+        self.rect = pygame.Rect(x_coordinate, y_coordinate, w, h)
+
+        self.param['pixel_x'], self.param['pixel_y'] = Grid.get_pixel_coordinates(
+            self.param['x_coordinate'], self.param['y_coordinate'])
+        (self.param['x_final'], self.param['y_final']) = (self.param['pixel_x'], self.param['pixel_y'])
+
         self.get_drawpoint()
-        self.ready = True
 
     def get_drawpoint(self):
-        (self.pixel_x, self.pixel_y) = Grid.get_pixel_coordinates(
-            self.x_coordinate, self.y_coordinate)
+        self.param['old_coordinate'] = (self.param['pixel_x'], self.param['pixel_y'])
+        (self.param['pixel_x'], self.param['pixel_y']) = Grid.get_pixel_coordinates(
+            self.param['x_coordinate'], self.param['y_coordinate'])
 
     def draw(self):
+        centerpixel = (self.param['pixel_x'] - (self.param['w']/2), self.param['pixel_y'] - self.param['h'])
         pygame.draw.rect(self.surface, (255, 0, 0), (
-            self.pixel_x - (self.w/2),
-            self.pixel_y - self.h,
-            self.w,
-            self.h
+            centerpixel[0],
+            centerpixel[1],
+            self.param['w'],
+            self.param['h']
         ))
-        # pygame.draw.rect(self.surface, (255, 0, 0), (
-        #     self.pixel_x - (self.w/2),
-        #     self.pixel_y - self.h,
-        #     self.w,
-        #     self.h
-        # ))
 
     def update_coordinate(self, x_coordinate, y_coordinate):
-        self.x_coordinate = x_coordinate
-        self.y_coordinate = y_coordinate
+        self.param['x_coordinate'] = x_coordinate
+        self.param['y_coordinate'] = y_coordinate
         self.get_drawpoint()
-
-    def delta_xy_coordinate(self, x_coordinate, y_coordinate):
-        self.x_coordinate += x_coordinate
-        self.y_coordinate += y_coordinate
-        self.get_drawpoint()
-        self.animate_latidude_movement()
-
-    def delta_x_coordinate(self, x_coordinate):
-        self.x_coordinate += x_coordinate
-        self.get_drawpoint()
-        self.animate_latidude_movement()
-
-    def delta_y_coordinate(self, y_coordinate):
-        self.y_coordinate += y_coordinate
-        self.get_drawpoint()
-
-    # move to specialized class
-    def animate_latidude_movement(self):
-        self.ready = False
-        pygame.time.wait(200)
-        self.ready = True

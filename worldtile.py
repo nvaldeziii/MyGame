@@ -15,12 +15,12 @@ class Tile(Sprite):
 
     def draw(self):
         tile = pygame.image.load('sprites/tile/sample.png')
-        for x in range(0, 10):
-            for y in range(0, 10):
+        for x in range(0, 11):
+            for y in range(0, 23):
                 self.update_coordinate(x, y)
                 self.surface.blit(
                     tile, (
-                        self.pixel_x - (self.tile_w / 2),
-                        self.pixel_y - (self.tile_h / 2)
+                        self.param['pixel_x'] - (self.tile_w / 2),
+                        self.param['pixel_y'] - (self.tile_h / 2)
                     )
                 )

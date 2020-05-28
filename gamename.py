@@ -33,13 +33,15 @@ def redraw_bg():
 
 def mouse_listener(keys):
     if keys[0] == 1:
-        if engine.player.ready:
+        if engine.player.param['ready']:
             pygame.draw.line(Display.Surface['main'], (0, 0, 255),
-                             (engine.player.pixel_x, engine.player.pixel_y), engine.mouse_pos, 4)
+                             (engine.player.param['pixel_x'],
+                              engine.player.param['pixel_y']),
+                             engine.mouse_pos, 4
+                             )
             pygame.display.update()
             movement = engine.player.player_move(engine.mouse_pos)
             engine.player.delta_xy_coordinate(movement[0], movement[1])
-
 
 while True:
     # https://www.pygame.org/docs/ref/time.html#pygame.time.Clock.tick
@@ -68,5 +70,7 @@ while True:
 
     mouse_listener(pygame.mouse.get_pressed())
 
+    grid.debug_obj.update({'player': engine.player.param})
+    grid.debug_obj.update({'player_debug': engine.player.debug_obj})
     grid.draw()
     pygame.display.update()

@@ -147,16 +147,16 @@ class Grid:
             x1, y1, x2, y2)
         plot['m'] = math.tan(plot['angle'])
 
-        if plot['m'] == 0:
-            plot['y3'] = y1 + (velocity * plot['ydir'])
+        if (x2 - x1) == 0:
+            plot['y3'] = y1 + (.8 * velocity * plot['ydir'])
             plot['x3'] = x1
 
-            if plot['ydir'] == 1:
-                if plot['y3'] < y1:
-                    plot['y3'] = y1
+            if plot['ydir'] == -1:
+                if plot['y3'] <= y2 -1:
+                    plot['y3'] = y2
             else:
-                if plot['y3'] > y1:
-                    plot['y3'] = y1
+                if plot['y3'] >= y2 -1:
+                    plot['y3'] = y2
 
         else:
             plot['x3'] = x1 + (velocity * plot['xdir'])
@@ -170,5 +170,5 @@ class Grid:
 
             plot['y3'] = Grid.get_y_value(x1, y1, plot['m'], plot['x3'])
 
-
+        logger.debug(f"plot : {plot}")
         return (plot['x3'], plot['y3'])

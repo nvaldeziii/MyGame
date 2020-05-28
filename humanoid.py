@@ -45,7 +45,14 @@ class Player(Humanoid):
         })
 
         self.rect.midbottom = (vector[0], vector[1])
-        pygame.draw.rect(self.surface, (255, 0, 0), self.rect)
+
+        char = pygame.image.load('sprites/character/player/warrior_m.png')
+        self.surface.blit(
+            char, self.rect,
+            (33,71,32,36)
+        )
+
+        # pygame.draw.rect(self.surface, (255, 0, 0), self.rect)
 
         if vector == final_position:
                 self.moving = False

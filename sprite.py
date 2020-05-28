@@ -31,13 +31,9 @@ class Sprite:
             self.param['x_coordinate'], self.param['y_coordinate'])
 
     def draw(self):
-        centerpixel = (self.param['pixel_x'] - (self.param['w']/2), self.param['pixel_y'] - self.param['h'])
-        pygame.draw.rect(self.surface, (255, 0, 0), (
-            centerpixel[0],
-            centerpixel[1],
-            self.param['w'],
-            self.param['h']
-        ))
+        # centerpixel = (self.param['pixel_x'] - (self.param['w']/2), self.param['pixel_y'] - self.param['h'])
+        self.rect.center=(self.param['pixel_x'], self.param['pixel_y'])
+        pygame.draw.rect(self.surface, (255, 0, 0),self.rect)
 
     def update_coordinate(self, x_coordinate, y_coordinate):
         self.param['x_coordinate'] = x_coordinate

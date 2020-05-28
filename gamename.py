@@ -3,9 +3,11 @@ import logging
 
 from gameparams import GameParams
 from sprite import Sprite
+from humanoid import Player
 from grid import Grid
 from worldtile import Tile
 from engine import Engine
+from display import Display
 
 # temp
 import math
@@ -13,36 +15,30 @@ import math
 
 pygame.init()
 
-game_parameters = GameParams()
-
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
 
-game_window = pygame.display.set_mode(game_parameters.Window.get_tuple_size())
-
 pygame.display.set_caption("gamename")
 clock = pygame.time.Clock()
-
-player = Sprite(game_window, x_coordinate=5, y_coordinate=5)
-grid = Grid(game_parameters)
-tile = Tile(game_window)
+grid = Grid()
+tile = Tile(Display.Surface['main'])
 engine = Engine()
-engine.player = player
+engine.player = Player(Display.Surface['main'], x_coordinate=5, y_coordinate=5)
 
 
 def redraw_bg():
-    game_window.fill((0, 0, 0))
+    Display.Surface['main'].fill((0, 0, 0))
     tile.draw()
 
 
 def mouse_listener(keys):
     if keys[0] == 1:
         if engine.player.ready:
-            pygame.draw.line(game_window, (0, 0, 255),
-                             (player.pixel_x, player.pixel_y), engine.mouse_pos, 4)
+            pygame.draw.line(Display.Surface['main'], (0, 0, 255),
+                             (engine.player.pixel_x, engine.player.pixel_y), engine.mouse_pos, 4)
             pygame.display.update()
-            movement = engine.calculate_movement(engine.mouse_pos)
-            player.delta_xy_coordinate(movement[0], movement[1])
+            movement = engine.player.player_move(engine.mouse_pos)
+            engine.player.delta_xy_coordinate(movement[0], movement[1])
 
 
 while True:
@@ -68,9 +64,9 @@ while True:
             engine.mouse_pos = event.pos
 
     redraw_bg()
-    player.draw()
+    engine.player.draw()
 
     mouse_listener(pygame.mouse.get_pressed())
 
-    grid.draw(game_window)
+    grid.draw()
     pygame.display.update()

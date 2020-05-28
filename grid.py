@@ -1,6 +1,9 @@
 import math
 import pygame
 
+from display import Display
+from gameparams import GameParams
+
 
 class Grid:
     ANGLE1 = -0.4636476093997
@@ -10,13 +13,8 @@ class Grid:
     # ANGLE1 = -(1/6) * math.pi
     # ANGLE2 = (1/6) * math.pi
 
-    def __init__(self, game_parameters):
-        self.surface = pygame.Surface(
-            game_parameters.Window.get_tuple_size(), pygame.SRCALPHA, 32)
-        self.surface = self.surface.convert_alpha()
-
-        self.game_parameters = game_parameters
-        self.window_size = self.game_parameters.Window.Width
+    def __init__(self):
+        self.surface = Display.Surface['grid']
 
         self.grid_thickness = 50
 
@@ -32,12 +30,12 @@ class Grid:
             if self.show_coordinate:
                 self._render_coordinates()
 
-    def draw(self, parent_surface):
+    def draw(self):
         if self.visible:
-            parent_surface.blit(self.surface, (0, 0))
+            Display.Surface['main'].blit(self.surface, (0, 0))
 
     def _get_point2(self, point, slope):
-        dx = point[0] + self.window_size
+        dx = point[0] + GameParams.Window.Width
         b = point[1] - slope * point[0]
         return (dx, slope * dx + b)
 
@@ -47,14 +45,14 @@ class Grid:
         color = (0, 255, 0)  # green
 
         point = (0, 0)
-        while point[1] < self.game_parameters.Window.Height * 2:
+        while point[1] < GameParams.Window.Height * 2:
             point2 = self._get_point2(point, math.tan(Grid.ANGLE1))
             pygame.draw.line(self.surface, color,  point,
                              point2, line_thickness)
             point = (point[0], point[1] + self.grid_thickness)
 
-        point = (0, -self.game_parameters.Window.Height)
-        while point[1] < self.game_parameters.Window.Height:
+        point = (0, -GameParams.Window.Height)
+        while point[1] < GameParams.Window.Height:
             point2 = self._get_point2(point, math.tan(Grid.ANGLE2))
             pygame.draw.line(self.surface, color,  point,
                              point2, line_thickness)
@@ -88,3 +86,8 @@ class Grid:
         y = ORIGIN[1] + OFFSET[1] + (SPACING[1] * y_coordinate)
 
         return (x, y)
+
+    @staticmethod
+    def get_pixel_distance(x1, y1, x2, y2):
+        '''pixel coordinate x and y'''
+        return math.sqrt(math.pow((x2 - x1), 2) + math.pow(y2-y1, 2))

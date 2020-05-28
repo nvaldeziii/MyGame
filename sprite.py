@@ -3,7 +3,7 @@ from grid import Grid
 
 
 class Sprite:
-    def __init__(self, surface, x_coordinate=0, y_coordinate=0, w=64, h=64, ):
+    def __init__(self, surface=None, x_coordinate=0, y_coordinate=0, w=64, h=64):
         self.surface = surface
         self.x_coordinate = x_coordinate
         self.y_coordinate = y_coordinate
@@ -23,6 +23,12 @@ class Sprite:
             self.w,
             self.h
         ))
+        # pygame.draw.rect(self.surface, (255, 0, 0), (
+        #     self.pixel_x - (self.w/2),
+        #     self.pixel_y - self.h,
+        #     self.w,
+        #     self.h
+        # ))
 
     def update_coordinate(self, x_coordinate, y_coordinate):
         self.x_coordinate = x_coordinate

@@ -43,7 +43,7 @@ class Grid:
         self.grid_thickness = 50
         self.dimention = (11, 23)
         self.visible = False
-        self.show_coordinate = True
+        self.show_coordinate = False
         self.debug_obj = {}
 
         self.test = 0
@@ -86,11 +86,10 @@ class Grid:
             point = (point[0], point[1] + self.grid_thickness)
 
     def _render_coordinates(self):
-        font = pygame.font.Font('font/AnonymousPro-Regular.ttf', 12)
         for x_coordinate in range(0, self.dimention[0]):
             for y_coordinate in range(0, self.dimention[1]):
                 (x, y) = Grid.get_pixel_coordinates(x_coordinate, y_coordinate)
-                text = font.render(
+                text = Display.Font['debug'].render(
                     f'{x_coordinate},{y_coordinate}', True, (0,
                                                              0, 255)
                     # f'{x},{y}/{x_coordinate},{y_coordinate}', True, (255,
@@ -101,7 +100,6 @@ class Grid:
                 self.surface.blit(text, textRect)
 
     def _render_debug(self, obj):
-        font = pygame.font.Font('font/AnonymousPro-Regular.ttf', 12)
         x = 50
         y = 50
         padding = 15
@@ -109,13 +107,13 @@ class Grid:
         text_color = (0, 0, 0)
         bg_color = (255, 255, 255)
         for item in obj:
-            text = font.render(f' {item} ', True, text_color, bg_color)
+            text = Display.Font['debug'].render(f' {item} ', True, text_color, bg_color)
             textRect = text.get_rect()
             textRect.midleft = (x, y + (padding*line))
             self.surface.blit(text, textRect)
             line += 1
             for stats in obj[item]:
-                text = font.render(
+                text = Display.Font['debug'].render(
                     f' {stats}: {obj[item][stats]} ', True, text_color, bg_color)
                 textRect = text.get_rect()
                 textRect.midleft = (x+25, y + (padding*line))

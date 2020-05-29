@@ -10,16 +10,18 @@ logger = logging.getLogger()
 
 
 class Humanoid(Sprite):
-    def __init__(self, surface=None, x_coordinate=0, y_coordinate=0):
-        Sprite.__init__(self, surface, x_coordinate, y_coordinate, w=32, h=32)
-        self.velocity = 1
+    def __init__(self, surface, image, x_coordinate=0, y_coordinate=0):
+        Sprite.__init__(self, surface,  image, x_coordinate=x_coordinate,
+                        y_coordinate=y_coordinate, w=32, h=32)
+        self.velocity = 2
         self.moving = False
         self.debug_obj = {}
 
 
 class Player(Humanoid):
-    def __init__(self, surface=None, x_coordinate=0, y_coordinate=0):
-        Humanoid.__init__(self, surface, x_coordinate, y_coordinate)
+    def __init__(self, surface, image, x_coordinate=0, y_coordinate=0):
+        Humanoid.__init__(self, surface, image,
+                          x_coordinate=x_coordinate, y_coordinate=y_coordinate)
 
     def draw(self):
         final_position = (self.param['x_final'], self.param['y_final'])
@@ -45,23 +47,22 @@ class Player(Humanoid):
         })
 
         self.rect.midbottom = (vector[0], vector[1])
-
-        char = pygame.image.load('sprites/character/player/warrior_m.png')
         self.surface.blit(
-            char, self.rect,
-            (33,71,32,36)
+            self.image, self.rect,
+            (33, 71, 32, 36)
         )
 
         # pygame.draw.rect(self.surface, (255, 0, 0), self.rect)
 
         if vector == final_position:
-                self.moving = False
-                self.param['ready'] = True
+            self.moving = False
+            self.param['ready'] = True
         self.param['pixel_x'] = vector[0]
         self.param['pixel_y'] = vector[1]
 
     def get_drawpoint(self):
-        self.param['old_coordinate'] = (self.param['pixel_x'], self.param['pixel_y'])
+        self.param['old_coordinate'] = (
+            self.param['pixel_x'], self.param['pixel_y'])
         (self.param['x_final'], self.param['y_final']) = Grid.get_pixel_coordinates(
             self.param['x_coordinate'], self.param['y_coordinate'])
 

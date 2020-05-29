@@ -21,10 +21,8 @@ logger = logging.getLogger()
 pygame.display.set_caption("gamename")
 clock = pygame.time.Clock()
 grid = Grid()
-tile = Tile(Display.Surface['main'])
+tile = Tile(Display.Surface['main'], 'sprites/tile/sample.png')
 engine = Engine()
-engine.player = Player(Display.Surface['main'], x_coordinate=5, y_coordinate=5)
-
 
 def redraw_bg():
     Display.Surface['main'].fill((0, 0, 0))

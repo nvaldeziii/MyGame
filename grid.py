@@ -84,13 +84,13 @@ class Grid:
         line = 1
         text_color = (0, 0, 0)
         bg_color = (255, 255, 255)
-        for i, item in enumerate(obj, 1):
+        for item in obj:
             text = font.render(f' {item} ', True, text_color, bg_color)
             textRect = text.get_rect()
             textRect.midleft = (x, y + (padding*line))
             self.surface.blit(text, textRect)
             line += 1
-            for j, stats in enumerate(obj[item], 1):
+            for stats in obj[item]:
                 text = font.render(f' {stats}: {obj[item][stats]} ', True, text_color, bg_color)
                 textRect = text.get_rect()
                 textRect.midleft = (x+25, y + (padding*line))
@@ -148,7 +148,7 @@ class Grid:
         plot['m'] = math.tan(plot['angle'])
 
         if (x2 - x1) == 0:
-            plot['y3'] = y1 + (.8 * velocity * plot['ydir'])
+            plot['y3'] = y1 + (.5 * velocity * plot['ydir'])
             plot['x3'] = x1
 
             if plot['ydir'] == -1:

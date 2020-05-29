@@ -7,20 +7,17 @@ class WorldTile:
     pass
 
 class Tile(Sprite):
-    def __init__(self, surface):
+    def __init__(self, surface, image):
         self.tile_w = 100
         self.tile_h = 50
+        Sprite.__init__(self, surface, image, w=self.tile_w, h=self.tile_h, )
 
-        Sprite.__init__(self, surface=surface, w=self.tile_w, h=self.tile_h)
-
-    def draw(self):
-        tile = pygame.image.load('sprites/tile/sample.png')
+    def update(self):
         for x in range(0, 11):
             for y in range(0, 23):
                 self.update_coordinate(x, y)
-                self.surface.blit(
-                    tile, (
-                        self.param['pixel_x'] - (self.tile_w / 2),
-                        self.param['pixel_y'] - (self.tile_h / 2)
-                    )
-                )
+                self.rect.center= (self.param['pixel_x'], self.param['pixel_y'])
+                self.surface.blit(self.image, self.rect)
+
+    def draw(self):
+        self.update()

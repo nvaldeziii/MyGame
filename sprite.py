@@ -36,9 +36,9 @@ class Sprite(pygame.sprite.Sprite):
         self.rect.center=(self.param['pixel_x'], self.param['pixel_y'])
         pygame.draw.rect(self.surface, (255, 0, 0),self.rect)
 
-    def draw(self):
-        '''deprecate'''
-        self.update()
+    # def draw(self):
+    #     '''deprecate'''
+    #     self.update()
 
     def update_coordinate(self, x_coordinate, y_coordinate):
         self.param['x_coordinate'] = x_coordinate

@@ -5,7 +5,7 @@ from gameparams import GameParams
 from sprite import Sprite
 from humanoid import Player
 from grid import Grid
-from worldtile import Tile
+from worldtile import Tile, WorldTile
 from engine import Engine
 from display import Display
 
@@ -21,19 +21,21 @@ logger = logging.getLogger()
 pygame.display.set_caption("gamename")
 clock = pygame.time.Clock()
 grid = Grid()
-tile = Tile(Display.Surface['main'], 'sprites/tile/sample.png')
+# tile = Tile(Display.Surface['main'], 'sprites/tile/sample.png')
+world_tile = WorldTile()
 engine = Engine()
 
 
 def init():
-    Display.Group['tile'].add(tile)
+    # Display.Group['tile'].add(tile)
+    world_tile.generate_area()
     Display.Group['humanoid'].add(engine.player)
 
 def redraw_bg():
     Display.Surface['main'].fill((0, 0, 0))
 
-    Display.Group['tile'].update()
-    Display.Group['humanoid'].update()
+    for group in ['tile', 'humanoid', 'debug']:
+        Display.Group[group].update()
 
 
 def mouse_listener(keys):
@@ -60,8 +62,6 @@ while True:
 
     pygame.display.set_caption(
         f"fps: {str(clock.get_fps())}")
-    # pygame.time.delay(1000)
-    # logging.debug(f"tick ({tick})")
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -77,11 +77,12 @@ while True:
             engine.mouse_pos = event.pos
 
     redraw_bg()
-
     mouse_listener(pygame.mouse.get_pressed())
 
-    grid.debug_obj.update({'player': engine.player.param})
-    grid.debug_obj.update({'player_debug': engine.player.debug_obj})
-    grid.debug_obj.update({'mouse': {'pos': engine.mouse_pos}})
+    grid.debug_obj.update({
+        'player': engine.player.param,
+        'player_debug': engine.player.debug_obj,
+        'mouse': {'pos': engine.mouse_pos}
+    })
     grid.draw()
     pygame.display.update()

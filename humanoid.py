@@ -32,40 +32,53 @@ class Player(Humanoid):
         self.center_px = Grid.get_pixel_coordinates(x_coordinate, y_coordinate)
 
     def update(self):
-        # final_position = (self.param['x_final'], self.param['y_final'])
-        # vector = final_position
-        # if self.moving:
-        #     vector = Grid.get_movement_vector(
-        #         self.param['pixel_x'],
-        #         self.param['pixel_y'],
-        #         self.param['x_final'],
-        #         self.param['y_final'],
-        #         self.velocity
-        #     )
-
-        #     pygame.draw.line(self.surface, (255, 255, 0),
-        #                      (self.param['old_coordinate'][0],
-        #                       self.param['old_coordinate'][1]),
-        #                      final_position, 5)
-
-        # self.debug_obj.update({
-        #     'moving': self.moving,
-        #     'vector': vector,
-        #     'final_position': final_position
-        # })
-
-        # self.rect.midbottom = (vector[0], vector[1])
         self.rect.midbottom = (self.center_px[0], self.center_px[1])
         self.surface.blit(
             self.image, self.rect,
             (33, 71, 32, 36)
         )
 
-        # pygame.draw.rect(self.surface, (255, 0, 0), self.rect)
-
-
         self.moving = False
         self.param['ready'] = True
+
+    # def update2(self):
+    #     '''player moves for proof of concept,
+    #        tile should move in next verion'''
+    #     final_position = (self.param['x_final'], self.param['y_final'])
+    #     vector = final_position
+    #     if self.moving:
+    #         vector = Grid.get_movement_vector(
+    #             self.param['pixel_x'],
+    #             self.param['pixel_y'],
+    #             self.param['x_final'],
+    #             self.param['y_final'],
+    #             self.velocity
+    #         )
+
+    #         pygame.draw.line(self.surface, (255, 255, 0),
+    #                          (self.param['old_coordinate'][0],
+    #                           self.param['old_coordinate'][1]),
+    #                          final_position, 5)
+
+    #     self.debug_obj.update({
+    #         'moving': self.moving,
+    #         'vector': vector,
+    #         'final_position': final_position
+    #     })
+
+    #     self.rect.midbottom = (vector[0], vector[1])
+    #     self.surface.blit(
+    #         self.image, self.rect,
+    #         (33, 71, 32, 36)
+    #     )
+
+    #     # pygame.draw.rect(self.surface, (255, 0, 0), self.rect)
+
+    #     if vector == final_position:
+    #         self.moving = False
+    #         self.param['ready'] = True
+    #     self.param['pixel_x'] = vector[0]
+    #     self.param['pixel_y'] = vector[1]
 
     def get_drawpoint(self):
         self.param['old_coordinate'] = (
@@ -82,6 +95,7 @@ class Player(Humanoid):
         self.get_drawpoint()
         self.param['ready'] = False
         self.moving = True
+        # self.animate_latidude_movement()
 
     def animate_latidude_movement(self):
         self.param['ready'] = False

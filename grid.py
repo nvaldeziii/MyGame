@@ -9,6 +9,18 @@ from gameparams import GameParams
 logger = logging.getLogger()
 
 
+class DirectionVector:
+    RIGHT = [1, 0]
+    UP_RIGHT = [1, -1]
+    UP = [0, -2]
+    UP_LEFT = [-1, -1]
+    LEFT = [-1, 0]
+    DOWN_LEFT = [-1, 1]
+    DOWN = [0, 2]
+    DOWN_RIGHT = [1, 1]
+    CENTER = [0,0]
+
+
 class MouseAngle:
     RIGHT = [0.39269908169, -0.39269908169]
     UP_RIGHT = [1.1780972451, 0.39269908169]
@@ -19,19 +31,10 @@ class MouseAngle:
     DOWN = [-1.96349540849, -1.1780972451]
     DOWN_RIGHT = [-1.1780972451, -0.39269908169]
 
+
 class Grid:
     ANGLE1 = -0.4636476093997
     ANGLE2 = -1 * ANGLE1
-    DIRECTIONAL_ANGLE = {
-        'RIGHT': [0.39269908169, -0.39269908169],
-        'UP_RIGHT': [1.1780972451, 0.39269908169],
-        'UP': [1.96349540849, 1.1780972451],
-        'UP_LEFT': [2.74889357189, 1.96349540849],
-        'LEFT': [math.pi, 2.74889357189, -math.pi, -2.74889357189],
-        'DOWN_LEFT': [-2.74889357189, -1.96349540849],
-        'DOWN': [-1.96349540849, -1.1780972451],
-        'DOWN_RIGHT': [-1.1780972451, -0.39269908169]
-    }
 
     def __init__(self):
         self.surface = Display.Surface['grid']
@@ -190,5 +193,27 @@ class Grid:
 
             plot['y3'] = Grid.get_y_value(x1, y1, plot['m'], plot['x3'])
 
-        logger.debug(f"plot : {plot}")
+        # logger.debug(f"plot : {plot}")
         return (plot['x3'], plot['y3'])
+
+    @staticmethod
+    def get_direction_from_point_and_angle(angle):
+        if MouseAngle.RIGHT[0] > angle and angle > MouseAngle.RIGHT[1]:
+            return DirectionVector.RIGHT
+        elif MouseAngle.DOWN_RIGHT[0] < angle and angle < MouseAngle.DOWN_RIGHT[1]:
+            return DirectionVector.DOWN_RIGHT
+        elif MouseAngle.DOWN[0] < angle and angle < MouseAngle.DOWN[1]:
+            return DirectionVector.DOWN
+        elif MouseAngle.DOWN_LEFT[0] < angle and angle < MouseAngle.DOWN_LEFT[1]:
+            return DirectionVector.DOWN_LEFT
+        elif ((MouseAngle.LEFT[2] <= angle and angle < MouseAngle.LEFT[3])
+            or (MouseAngle.LEFT[0] >= angle and angle > MouseAngle.LEFT[1])):
+            return DirectionVector.LEFT
+        elif MouseAngle.UP_LEFT[0] > angle and angle > MouseAngle.UP_LEFT[1]:
+            return DirectionVector.UP_LEFT
+        elif MouseAngle.UP[0] > angle and angle > MouseAngle.UP[1]:
+            return DirectionVector.UP
+        elif MouseAngle.UP_RIGHT[0] > angle and angle > MouseAngle.UP_RIGHT[1]:
+            return DirectionVector.UP_RIGHT
+        else:
+            return DirectionVector.CENTER

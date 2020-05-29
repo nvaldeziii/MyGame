@@ -4,7 +4,7 @@ import pygame
 
 from sprite import Sprite
 from event_handler import MouseClick
-from grid import Grid, MouseAngle
+from grid import Grid, MouseAngle, DirectionVector
 
 logger = logging.getLogger()
 
@@ -89,53 +89,29 @@ class Player(Humanoid):
         self.param['ready'] = True
 
     def player_move(self, mouse_pos):
-
+        '''
+            desc
+        '''
         angle = MouseClick.get_angle_from_player(
-            (self.param['pixel_x'], self.param['pixel_y']), mouse_pos)
+            (
+                self.param['pixel_x'],
+                self.param['pixel_y']
+            ),
+            mouse_pos
+        )
         self.debug_obj.update({'MouseTheta': angle})
 
-        if MouseAngle.RIGHT[0] > angle and angle > MouseAngle.RIGHT[1]:
-            logger.debug(
-                f"Moving player Right: {self.param['x_coordinate']+1},{self.param['y_coordinate']}")
-            return (1, 0)
-        elif MouseAngle.DOWN_RIGHT[0] < angle and angle < MouseAngle.DOWN_RIGHT[1]:
-            # if y is even and down, don't add to x
-            x = 0 if self.param['y_coordinate'] % 2 == 0 else 1
-            logger.debug(
-                f"Moving player DownRight: {self.param['x_coordinate']+x},{self.param['y_coordinate']+1}")
-            return (x, 1)
-        elif MouseAngle.DOWN[0] < angle and angle < MouseAngle.DOWN[1]:
-            logger.debug(
-                f"Moving player Down: {self.param['x_coordinate']},{self.param['y_coordinate']+2}")
-            return (0, 2)
-        elif MouseAngle.DOWN_LEFT[0] < angle and angle < MouseAngle.DOWN_LEFT[1]:
-            # if y is odd and down, don't subtract to x
-            x = 0 if self.param['y_coordinate'] % 2 != 0 else -1
-            logger.debug(
-                f"Moving player DownLeft: {self.param['x_coordinate']+x},{self.param['y_coordinate']+1}")
-            return (x, 1)
-        elif ((MouseAngle.LEFT[2] <= angle and angle < MouseAngle.LEFT[3])
-              or (MouseAngle.LEFT[0] >= angle and angle > MouseAngle.LEFT[1])):
-            logger.debug(
-                f"Moving player Left: {self.param['x_coordinate']-1},{self.param['y_coordinate']}")
-            return (-1, 0)
-        elif MouseAngle.UP_LEFT[0] > angle and angle > MouseAngle.UP_LEFT[1]:
-            # if y is odd, don't decrease x
-            x = 0 if self.param['y_coordinate'] % 2 != 0 else -1
-            logger.debug(
-                f"Moving player UpLeft: {self.param['x_coordinate']+x},{self.param['y_coordinate']-1}")
-            return (x, -1)
-        elif MouseAngle.UP[0] > angle and angle > MouseAngle.UP[1]:
-            logger.debug(
-                f"Moving player Up: {self.param['x_coordinate']},{self.param['y_coordinate']-1}")
-            return (0, -2)
-        elif MouseAngle.UP_RIGHT[0] > angle and angle > MouseAngle.UP_RIGHT[1]:
-            # if y is even. don't increase x
-            x = 0 if self.param['y_coordinate'] % 2 == 0 else 1
-            logger.debug(
-                f"Moving player UpRight: {self.param['x_coordinate']+x},{self.param['y_coordinate']-1}")
-            return (x, -1)
-        else:
-            logger.debug(
-                f"Direction out of range: angle({angle})")
-            return (0, 0)
+        d_vect = Grid.get_direction_from_point_and_angle(angle)
+
+        logger.debug(f"get_direction_from_point_and_angle: {d_vect}")
+        if d_vect == DirectionVector.DOWN_RIGHT:
+            d_vect[0] = 0 if self.param['y_coordinate'] % 2 == 0 else 1
+        elif d_vect == DirectionVector.DOWN_LEFT:
+            d_vect[0] = 0 if self.param['y_coordinate'] % 2 != 0 else -1
+        elif d_vect == DirectionVector.UP_RIGHT:
+            d_vect[0] = 0 if self.param['y_coordinate'] % 2 == 0 else 1
+        elif d_vect == DirectionVector.UP_LEFT:
+            d_vect[0] = 0 if self.param['y_coordinate'] % 2 != 0 else 1
+
+        logger.debug(f"d_vect: {d_vect}")
+        return d_vect

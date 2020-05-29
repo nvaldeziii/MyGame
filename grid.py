@@ -1,3 +1,4 @@
+import copy
 import logging
 import math
 import pygame
@@ -199,21 +200,21 @@ class Grid:
     @staticmethod
     def get_direction_from_point_and_angle(angle):
         if MouseAngle.RIGHT[0] > angle and angle > MouseAngle.RIGHT[1]:
-            return DirectionVector.RIGHT
+            return copy.deepcopy(DirectionVector.RIGHT)
         elif MouseAngle.DOWN_RIGHT[0] < angle and angle < MouseAngle.DOWN_RIGHT[1]:
-            return DirectionVector.DOWN_RIGHT
+            return copy.deepcopy(DirectionVector.DOWN_RIGHT)
         elif MouseAngle.DOWN[0] < angle and angle < MouseAngle.DOWN[1]:
-            return DirectionVector.DOWN
+            return copy.deepcopy(DirectionVector.DOWN)
         elif MouseAngle.DOWN_LEFT[0] < angle and angle < MouseAngle.DOWN_LEFT[1]:
-            return DirectionVector.DOWN_LEFT
+            return copy.deepcopy(DirectionVector.DOWN_LEFT)
         elif ((MouseAngle.LEFT[2] <= angle and angle < MouseAngle.LEFT[3])
             or (MouseAngle.LEFT[0] >= angle and angle > MouseAngle.LEFT[1])):
-            return DirectionVector.LEFT
+            return copy.deepcopy(DirectionVector.LEFT)
         elif MouseAngle.UP_LEFT[0] > angle and angle > MouseAngle.UP_LEFT[1]:
-            return DirectionVector.UP_LEFT
+            return copy.deepcopy(DirectionVector.UP_LEFT)
         elif MouseAngle.UP[0] > angle and angle > MouseAngle.UP[1]:
-            return DirectionVector.UP
+            return copy.deepcopy(DirectionVector.UP)
         elif MouseAngle.UP_RIGHT[0] > angle and angle > MouseAngle.UP_RIGHT[1]:
-            return DirectionVector.UP_RIGHT
+            return copy.deepcopy(DirectionVector.UP_RIGHT)
         else:
-            return DirectionVector.CENTER
+            return copy.deepcopy(DirectionVector.CENTER)

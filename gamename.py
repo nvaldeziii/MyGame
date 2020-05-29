@@ -24,6 +24,7 @@ grid = Grid()
 tile = Tile(Display.Surface['main'], 'sprites/tile/sample.png')
 engine = Engine()
 
+
 def redraw_bg():
     Display.Surface['main'].fill((0, 0, 0))
     tile.draw()
@@ -38,8 +39,12 @@ def mouse_listener(keys):
                              engine.mouse_pos, 4
                              )
             pygame.display.update()
-            movement = engine.player.player_move(engine.mouse_pos)
-            engine.player.delta_xy_coordinate(movement[0], movement[1])
+            if Grid.get_pixel_distance(
+                engine.mouse_pos[0], engine.mouse_pos[1],
+                engine.player.param['pixel_x'], engine.player.param['pixel_y']
+            ) > 50:
+                movement = engine.player.player_move(engine.mouse_pos)
+                engine.player.delta_xy_coordinate(movement[0], movement[1])
 
 
 while True:

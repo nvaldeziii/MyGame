@@ -111,7 +111,7 @@ class Player(Humanoid):
         elif d_vect == DirectionVector.UP_RIGHT:
             d_vect[0] = 0 if self.param['y_coordinate'] % 2 == 0 else 1
         elif d_vect == DirectionVector.UP_LEFT:
-            d_vect[0] = 0 if self.param['y_coordinate'] % 2 != 0 else 1
+            d_vect[0] = 0 if self.param['y_coordinate'] % 2 != 0 else -1
 
         logger.debug(f"d_vect: {d_vect}")
         return d_vect

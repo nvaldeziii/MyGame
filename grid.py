@@ -9,9 +9,29 @@ from gameparams import GameParams
 logger = logging.getLogger()
 
 
+class MouseAngle:
+    RIGHT = [0.39269908169, -0.39269908169]
+    UP_RIGHT = [1.1780972451, 0.39269908169]
+    UP = [1.96349540849, 1.1780972451]
+    UP_LEFT = [2.74889357189, 1.96349540849]
+    LEFT = [math.pi, 2.74889357189, -math.pi, -2.74889357189]
+    DOWN_LEFT = [-2.74889357189, -1.96349540849]
+    DOWN = [-1.96349540849, -1.1780972451]
+    DOWN_RIGHT = [-1.1780972451, -0.39269908169]
+
 class Grid:
     ANGLE1 = -0.4636476093997
     ANGLE2 = -1 * ANGLE1
+    DIRECTIONAL_ANGLE = {
+        'RIGHT': [0.39269908169, -0.39269908169],
+        'UP_RIGHT': [1.1780972451, 0.39269908169],
+        'UP': [1.96349540849, 1.1780972451],
+        'UP_LEFT': [2.74889357189, 1.96349540849],
+        'LEFT': [math.pi, 2.74889357189, -math.pi, -2.74889357189],
+        'DOWN_LEFT': [-2.74889357189, -1.96349540849],
+        'DOWN': [-1.96349540849, -1.1780972451],
+        'DOWN_RIGHT': [-1.1780972451, -0.39269908169]
+    }
 
     def __init__(self):
         self.surface = Display.Surface['grid']
@@ -91,7 +111,8 @@ class Grid:
             self.surface.blit(text, textRect)
             line += 1
             for stats in obj[item]:
-                text = font.render(f' {stats}: {obj[item][stats]} ', True, text_color, bg_color)
+                text = font.render(
+                    f' {stats}: {obj[item][stats]} ', True, text_color, bg_color)
                 textRect = text.get_rect()
                 textRect.midleft = (x+25, y + (padding*line))
                 self.surface.blit(text, textRect)
@@ -139,7 +160,6 @@ class Grid:
         b = Grid.get_y_intercept(y1, m, x1)
         return (m * x3) + b
 
-
     @staticmethod
     def get_movement_vector(x1, y1, x2, y2, velocity):
         plot = {}
@@ -152,10 +172,10 @@ class Grid:
             plot['x3'] = x1
 
             if plot['ydir'] == -1:
-                if plot['y3'] <= y2 -1:
+                if plot['y3'] <= y2 - 1:
                     plot['y3'] = y2
             else:
-                if plot['y3'] >= y2 -1:
+                if plot['y3'] >= y2 - 1:
                     plot['y3'] = y2
 
         else:

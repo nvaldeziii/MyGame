@@ -10,8 +10,8 @@ class WorldTile:
         self.sprite_group = sprite_group
         self.mapinfo = MapInfo()
         self.topleft = [0, 0]
-        self.screen_lenght_x = 10
-        self.screen_lenght_y = 10
+        self.screen_lenght_x = 14
+        self.screen_lenght_y = 28
         self.pixel_x = 0
         self.pixel_y = 0
 
@@ -39,7 +39,7 @@ class MapInfo:
         'img': 'sprites/tile/sample.png'
     }
 
-    def __init__(self, max_x=16):
+    def __init__(self, max_x=80):
         self.max_x = max_x
         self.tiles_total = self.max_x ** 2
         self.tiles = [[MapInfo.ONE_TILE] * self.max_x] * self.max_x
@@ -54,7 +54,9 @@ class Tile(Sprite):
     def render_coordinates(self):
         text = Display.Font['debug'].render(
             f"{self.param['x_coordinate']},{self.param['y_coordinate']}", True, (0, 0, 255))
-        self.surface.blit(text, self.rect)
+        text_rect = text.get_rect()
+        text_rect.center = Grid.get_pixel_coordinates(self.param['x_coordinate'], self.param['y_coordinate'])
+        self.surface.blit(text, text_rect)
 
     def update(self):
         self.rect.center = (

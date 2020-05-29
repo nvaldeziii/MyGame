@@ -30,6 +30,9 @@ class Player(Humanoid):
                           x_coordinate=x_coordinate, y_coordinate=y_coordinate)
 
     def draw(self):
+        self.update()
+
+    def update(self):
         final_position = (self.param['x_final'], self.param['y_final'])
         vector = final_position
         if self.moving:

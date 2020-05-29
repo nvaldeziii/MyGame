@@ -25,9 +25,15 @@ tile = Tile(Display.Surface['main'], 'sprites/tile/sample.png')
 engine = Engine()
 
 
+def init():
+    Display.Group['tile'].add(tile)
+    Display.Group['humanoid'].add(engine.player)
+
 def redraw_bg():
     Display.Surface['main'].fill((0, 0, 0))
-    tile.draw()
+
+    Display.Group['tile'].update()
+    Display.Group['humanoid'].update()
 
 
 def mouse_listener(keys):
@@ -47,6 +53,7 @@ def mouse_listener(keys):
                 engine.player.delta_xy_coordinate(movement[0], movement[1])
 
 
+init()
 while True:
     # https://www.pygame.org/docs/ref/time.html#pygame.time.Clock.tick
     clock.tick(60)
@@ -70,7 +77,6 @@ while True:
             engine.mouse_pos = event.pos
 
     redraw_bg()
-    engine.player.draw()
 
     mouse_listener(pygame.mouse.get_pressed())
 

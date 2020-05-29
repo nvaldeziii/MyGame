@@ -18,6 +18,3 @@ class Tile(Sprite):
                 self.update_coordinate(x, y)
                 self.rect.center= (self.param['pixel_x'], self.param['pixel_y'])
                 self.surface.blit(self.image, self.rect)
-
-    def draw(self):
-        self.update()

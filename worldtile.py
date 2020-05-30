@@ -6,10 +6,11 @@ from display import Display
 
 class WorldTile:
     def __init__(self, surface, sprite_group):
-        self.surface = surface
-        self.sprite_group = sprite_group
         self.mapinfo = MapInfo()
+        self.surface = pygame.Surface(self.mapinfo.map_px_dimention)
+        self.sprite_group = sprite_group
         self.topleft = [0, 0]
+        self.center_coord = [6, 14]
         self.screen_lenght_x = 14
         self.screen_lenght_y = 28
         self.pixel_x = 0
@@ -17,11 +18,9 @@ class WorldTile:
 
     def debug_obj(self):
         return {
-            'topleft': self.topleft
+            'topleft': self.topleft,
+            'center_coord': self.center_coord,
         }
-
-    def change_topleft(self, topleft):
-        self.topleft = topleft
 
     def generate_area(self):
         for x in range(self.topleft[0], self.screen_lenght_x):
@@ -31,8 +30,9 @@ class WorldTile:
                 self.sprite_group.add(tile)
         self.sprite_group.update()
 
-    def draw(self):
-        Display.Surface['main'].blit(self.surface, (self.pixel_x, self.pixel_y))
+    def draw(self, camera):
+        Display.Surface['main'].blit(self.surface, (camera.x, camera.y))
+
 
 class MapInfo:
     ONE_TILE = {
@@ -41,11 +41,14 @@ class MapInfo:
 
     def __init__(self, max_x=80):
         self.max_x = max_x
+        self.map_px_dimention = (self.max_x * Tile.DEFAULT_WIDTH, self.max_x * Tile.DEFAULT_HEIGHT)
         self.tiles_total = self.max_x ** 2
         self.tiles = [[MapInfo.ONE_TILE] * self.max_x] * self.max_x
 
 
 class Tile(Sprite):
+    DEFAULT_WIDTH = 100
+    DEFAULT_HEIGHT = 50
     def __init__(self, surface, image):
         self.tile_w = 100
         self.tile_h = 50
@@ -55,7 +58,8 @@ class Tile(Sprite):
         text = Display.Font['debug'].render(
             f"{self.param['x_coordinate']},{self.param['y_coordinate']}", True, (0, 0, 255))
         text_rect = text.get_rect()
-        text_rect.center = Grid.get_pixel_coordinates(self.param['x_coordinate'], self.param['y_coordinate'])
+        text_rect.center = Grid.get_pixel_coordinates(
+            self.param['x_coordinate'], self.param['y_coordinate'])
         self.surface.blit(text, text_rect)
 
     def update(self):

@@ -3,7 +3,7 @@ from grid import Grid
 
 
 class Sprite(pygame.sprite.Sprite):
-    def __init__(self, surface, image, x_coordinate=0, y_coordinate=0, w=64, h=64):
+    def __init__(self, surface, image, x_coordinate=0, y_coordinate=0, w=64, h=64, ):
         super().__init__()
         self.surface = surface
         self.param = {
@@ -27,8 +27,11 @@ class Sprite(pygame.sprite.Sprite):
 
         self.get_drawpoint()
 
+    def camera_draw(self):
+        raise NotImplementedError()
+
     def get_drawpoint(self):
-        self.param['old_coordinate'] = (self.param['pixel_x'], self.param['pixel_y'])
+        # self.param['old_coordinate'] = (self.param['pixel_x'], self.param['pixel_y'])
         (self.param['pixel_x'], self.param['pixel_y']) = Grid.get_pixel_coordinates(
             self.param['x_coordinate'], self.param['y_coordinate'])
 

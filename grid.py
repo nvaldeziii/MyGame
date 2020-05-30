@@ -36,6 +36,7 @@ class MouseAngle:
 class Grid:
     ANGLE1 = -0.4636476093997
     ANGLE2 = -1 * ANGLE1
+    ORIGIN = [70,40]
 
     def __init__(self):
         self.surface = Display.Surface['grid']
@@ -101,7 +102,7 @@ class Grid:
 
     def _render_debug(self, obj):
         x = 50
-        y = 50
+        y = 100
         padding = 15
         line = 1
         text_color = (0, 0, 0)
@@ -122,15 +123,14 @@ class Grid:
 
     @staticmethod
     def get_pixel_coordinates(x_coordinate, y_coordinate):
-        ORIGIN = (70, 40)
         SPACING = (100, 25)
 
         NO_OFFSET = (0, 0)
         EVEN_ROW_OFFSET = (50, 0)
         OFFSET = NO_OFFSET if y_coordinate % 2 == 0 else EVEN_ROW_OFFSET
 
-        x = ORIGIN[0] + OFFSET[0] + (SPACING[0] * x_coordinate)
-        y = ORIGIN[1] + OFFSET[1] + (SPACING[1] * y_coordinate)
+        x = Grid.ORIGIN[0] + OFFSET[0] + (SPACING[0] * x_coordinate)
+        y = Grid.ORIGIN[1] + OFFSET[1] + (SPACING[1] * y_coordinate)
 
         return (x, y)
 

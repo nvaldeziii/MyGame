@@ -34,12 +34,26 @@ def init():
 
 def redraw_screen():
     Display.Surface['main'].fill((0, 0, 0))
-    engine.world_tile.draw()
+
+    engine.camera.update(engine.player)
+
+    engine.world_tile.draw(engine.camera)
+
     for group in [
         'humanoid',
         'debug'
     ]:
         Display.Group[group].update()
+        for sprite in Display.Group[group]:
+            engine.camera.apply(sprite)
+
+    # blue line from player to mouse
+    pygame.draw.line(Display.Surface['main'], (0, 0, 255),
+                             (engine.player.perma_px[0],
+                              engine.player.perma_px[1]),
+                             engine.mouse_pos, 4
+                             )
+
     grid.draw()
     pygame.display.update()
 
@@ -47,18 +61,14 @@ def redraw_screen():
 def mouse_listener(keys):
     if keys[0] == 1:
         if engine.player.param['ready']:
-            pygame.draw.line(Display.Surface['main'], (0, 0, 255),
-                             (engine.player.param['pixel_x'],
-                              engine.player.param['pixel_y']),
-                             engine.mouse_pos, 4
-                             )
             pygame.display.update()
             if Grid.get_pixel_distance(
                 engine.mouse_pos[0], engine.mouse_pos[1],
-                engine.player.param['pixel_x'], engine.player.param['pixel_y']
+                engine.player.perma_px[0], engine.player.perma_px[1]
             ) > 50:
                 movement = engine.player.player_move(engine.mouse_pos)
                 engine.player.delta_xy_coordinate(movement[0], movement[1])
+                engine.camera.update_tile_offset(engine.player)
 
 
 init()
@@ -77,7 +87,16 @@ while True:
                 grid.toggle_visibility()
             if event.key == pygame.K_LEFT:
                 logger.debug(f"pressed K_LEFT")
-                # engine.world_tile.pixel_x += 1
+                engine.world_tile.topleft = [
+                    engine.world_tile.topleft[0] -
+                    1, engine.world_tile.topleft[1] - 1
+                ]
+            if event.key == pygame.K_RIGHT:
+                logger.debug(f"pressed K_RIGHT")
+                engine.world_tile.topleft = [
+                    engine.world_tile.topleft[0] +
+                    1, engine.world_tile.topleft[1] + 1
+                ]
         elif event.type == pygame.MOUSEBUTTONUP:
             pos = pygame.mouse.get_pos()
             logger.debug(f"Cliked on: {pos}")
@@ -85,18 +104,14 @@ while True:
         if event.type == pygame.MOUSEMOTION:
             engine.mouse_pos = event.pos
 
-    # key = pygame.key.get_pressed()
-    # if key[pygame.K_RIGHT]:
-    #     engine.world_tile.pixel_x += 1
-
     mouse_listener(pygame.mouse.get_pressed())
 
     grid.debug_obj.update({
         'player': engine.player.param,
         'player_debug': engine.player.debug_obj,
         'mouse': {'pos': engine.mouse_pos},
-        'engine.world_tile': engine.world_tile.debug_obj()
+        'engine.world_tile': engine.world_tile.debug_obj(),
+        'camera' : engine.camera.debug_obj()
     })
 
     redraw_screen()
-

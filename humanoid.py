@@ -25,13 +25,19 @@ class Humanoid(Sprite):
 
 
 class Player(Humanoid):
-    def __init__(self, surface, image, x_coordinate=0, y_coordinate=0):
+    def __init__(self, surface, image, x_coordinate, y_coordinate):
         Humanoid.__init__(self, surface, image,
                           x_coordinate=x_coordinate, y_coordinate=y_coordinate)
 
         self.center_px = Grid.get_pixel_coordinates(x_coordinate, y_coordinate)
 
-    def update(self):
+        self.perma_coord = (x_coordinate, y_coordinate)
+        self.perma_px = Grid.get_pixel_coordinates( self.perma_coord[0], self.perma_coord[1])
+        self.rect.midbottom = (self.perma_px[0], self.perma_px[1])
+
+        self.last_vector = (0,0)
+
+    def update2(self):
         self.rect.midbottom = (self.center_px[0], self.center_px[1])
         self.surface.blit(
             self.image, self.rect,
@@ -41,48 +47,40 @@ class Player(Humanoid):
         self.moving = False
         self.param['ready'] = True
 
-    # def update2(self):
-    #     '''player moves for proof of concept,
-    #        tile should move in next verion'''
-    #     final_position = (self.param['x_final'], self.param['y_final'])
-    #     vector = final_position
-    #     if self.moving:
-    #         vector = Grid.get_movement_vector(
-    #             self.param['pixel_x'],
-    #             self.param['pixel_y'],
-    #             self.param['x_final'],
-    #             self.param['y_final'],
-    #             self.velocity
-    #         )
+    def update(self):
+        '''player moves for proof of concept,
+           tile should move in next verion'''
+        self.surface.blit(
+            self.image, self.rect,
+            (33, 71, 32, 36)
+        )
 
-    #         pygame.draw.line(self.surface, (255, 255, 0),
-    #                          (self.param['old_coordinate'][0],
-    #                           self.param['old_coordinate'][1]),
-    #                          final_position, 5)
+        final_position = (self.param['x_final'], self.param['y_final'])
+        vector = final_position
+        if self.moving:
+            vector = Grid.get_movement_vector(
+                self.param['pixel_x'],
+                self.param['pixel_y'],
+                self.param['x_final'],
+                self.param['y_final'],
+                self.velocity
+            )
 
-    #     self.debug_obj.update({
-    #         'moving': self.moving,
-    #         'vector': vector,
-    #         'final_position': final_position
-    #     })
+        self.debug_obj.update({
+            'moving': self.moving,
+            'vector': vector,
+            'final_position': final_position
+        })
 
-    #     self.rect.midbottom = (vector[0], vector[1])
-    #     self.surface.blit(
-    #         self.image, self.rect,
-    #         (33, 71, 32, 36)
-    #     )
-
-    #     # pygame.draw.rect(self.surface, (255, 0, 0), self.rect)
-
-    #     if vector == final_position:
-    #         self.moving = False
-    #         self.param['ready'] = True
-    #     self.param['pixel_x'] = vector[0]
-    #     self.param['pixel_y'] = vector[1]
+        if vector == final_position:
+            self.moving = False
+            self.param['ready'] = True
+        self.param['pixel_x'] = vector[0]
+        self.param['pixel_y'] = vector[1]
 
     def get_drawpoint(self):
-        self.param['old_coordinate'] = (
-            self.param['pixel_x'], self.param['pixel_y'])
+        # self.param['old_coordinate'] = (
+        #     self.param['pixel_x'], self.param['pixel_y'])
         (self.param['x_final'], self.param['y_final']) = Grid.get_pixel_coordinates(
             self.param['x_coordinate'], self.param['y_coordinate'])
 
@@ -108,24 +106,24 @@ class Player(Humanoid):
         '''
         angle = MouseClick.get_angle_from_player(
             (
-                self.param['pixel_x'],
-                self.param['pixel_y']
+                self.perma_px[0],
+                self.perma_px[1]
             ),
             mouse_pos
         )
         self.debug_obj.update({'MouseTheta': angle})
 
-        d_vect = Grid.get_direction_from_point_and_angle(angle)
+        self.last_vector = Grid.get_direction_from_point_and_angle(angle)
 
-        logger.debug(f"get_direction_from_point_and_angle: {d_vect}")
-        if d_vect == DirectionVector.DOWN_RIGHT:
-            d_vect[0] = 0 if self.param['y_coordinate'] % 2 == 0 else 1
-        elif d_vect == DirectionVector.DOWN_LEFT:
-            d_vect[0] = 0 if self.param['y_coordinate'] % 2 != 0 else -1
-        elif d_vect == DirectionVector.UP_RIGHT:
-            d_vect[0] = 0 if self.param['y_coordinate'] % 2 == 0 else 1
-        elif d_vect == DirectionVector.UP_LEFT:
-            d_vect[0] = 0 if self.param['y_coordinate'] % 2 != 0 else -1
+        logger.debug(f"get_direction_from_point_and_angle: {self.last_vector}")
+        if self.last_vector == DirectionVector.DOWN_RIGHT:
+            self.last_vector[0] = 0 if self.param['y_coordinate'] % 2 == 0 else 1
+        elif self.last_vector == DirectionVector.DOWN_LEFT:
+            self.last_vector[0] = 0 if self.param['y_coordinate'] % 2 != 0 else -1
+        elif self.last_vector == DirectionVector.UP_RIGHT:
+            self.last_vector[0] = 0 if self.param['y_coordinate'] % 2 == 0 else 1
+        elif self.last_vector == DirectionVector.UP_LEFT:
+            self.last_vector[0] = 0 if self.param['y_coordinate'] % 2 != 0 else -1
 
-        logger.debug(f"d_vect: {d_vect}")
-        return d_vect
+        logger.debug(f"self.last_vector: {self.last_vector}")
+        return self.last_vector

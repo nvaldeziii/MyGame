@@ -3,7 +3,8 @@ import math
 
 from humanoid import Player
 from display import Display
-from worldtile import WorldTile
+from worldtile import WorldTile, Tile
+from camera import Camera
 
 logger = logging.getLogger()
 
@@ -17,4 +18,7 @@ class Engine:
             x_coordinate=6, y_coordinate=14)
         self.mouse_pos = None
 
-        self.world_tile = WorldTile(Display.Surface['tile'], Display.Group['tile'])
+        self.world_tile = WorldTile(
+            Display.Surface['tile'], Display.Group['tile'])
+        self.camera = Camera(self.world_tile.screen_lenght_x * Tile.DEFAULT_WIDTH,
+                             self.world_tile.screen_lenght_y * Tile.DEFAULT_HEIGHT)

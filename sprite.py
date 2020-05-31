@@ -19,7 +19,12 @@ class Sprite(pygame.sprite.Sprite):
             'pixel_y': 0
         }
         self.rect = pygame.Rect(x_coordinate, y_coordinate, w, h)
-        self.image = pygame.image.load(image)
+
+        try:
+            self.image = pygame.image.load(image)
+        except pygame.error as e:
+            self.image = pygame.image.load('sprites/tile/floor/placeholder_01.png')
+            logger.warning(f"{e}")
 
         self.param['pixel_x'], self.param['pixel_y'] = Grid.get_pixel_coordinates(
             self.param['x_coordinate'], self.param['y_coordinate'])

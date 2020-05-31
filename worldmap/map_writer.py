@@ -4,6 +4,7 @@ import json
 class MapWriter:
     STRUCT_FORMAT = '<HHII'
     TEST_DIMENTION = 80
+
     def __init__(self):
         with open('worldmap/map.json', 'r') as mapjson:
             maparr = json.loads(mapjson.read())

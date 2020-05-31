@@ -18,7 +18,6 @@ class Engine:
             x_coordinate=6, y_coordinate=14)
         self.mouse_pos = None
 
-        self.world_tile = WorldTile(
-            Display.Surface['tile'], Display.Group['tile'])
+        self.world_tile = WorldTile(Display.Group['tile'], Display.Group['tile_fg'])
         self.camera = Camera(self.world_tile.screen_lenght_x * Tile.DEFAULT_WIDTH,
                              self.world_tile.screen_lenght_y * Tile.DEFAULT_HEIGHT)

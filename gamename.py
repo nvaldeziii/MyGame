@@ -37,7 +37,7 @@ def redraw_screen():
 
     engine.camera.update(engine.player)
 
-    engine.world_tile.draw(engine.camera)
+    engine.world_tile.draw_bg(engine.camera)
 
     for group in [
         'humanoid',
@@ -47,6 +47,7 @@ def redraw_screen():
         for sprite in Display.Group[group]:
             engine.camera.apply(sprite)
 
+    engine.world_tile.draw_fg(engine.camera)
 
     # blue line from player to mouse
     if grid.visible:

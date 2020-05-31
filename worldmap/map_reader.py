@@ -1,42 +1,68 @@
 import struct
+import logging
+import json
 from pathlib import Path
 
 from worldmap.map_writer import MapWriter
 
 
+logger = logging.getLogger()
+
+
 class MapReader:
-    def __init__(self, file):
-        # with open(file, "rb") as mapbin:
-        #     x=0
-        #     while (mapbin.peek(1)):
-        #         image = mapbin.read(2).hex()
-        #         state = mapbin.read(2).hex()
-        #         coord_x = mapbin.read(4).hex()
-        #         coord_y = mapbin.read(4).hex()
-        #         x+=1
-        #         print(f"{x}: {image}, {state}, {coord_x}, {coord_y}")
-        #         if x > 20:
-        #             break
+    def __init__(self):
+        self.data = [[0]*1]*1
+        self.dimention = 0
+        # data format
+        #  [
+        #     FFFF, <- image id
+        #     FFFF, <- state
+        #     FFFF, <- object id
+        #   ]
 
-        struct_size = struct.calcsize(MapWriter.STRUCT_FORMAT)
-        struct_unpack = struct.Struct(MapWriter.STRUCT_FORMAT).unpack_from
+    @staticmethod
+    def tile_disector(tiledata, x ,y):
+        data = {
+            'tile_id': '0000',
+            'tile_state': '0',
+            'obj_id': '0000',
+            'obj_state': '0'
+        }
+        try:
+            data['tile_id'] = f'{tiledata[0]:04x}'
+            data['tile_state'] = f'{tiledata[1]:x}'
+        except IndexError as e:
+            logger.warning(f"failed to load tile data on ({x},{y}): {e}")
 
-        self.map_file_size = Path(file).stat().st_size
-        self.data = []
+        try:
+            data['obj_id'] = f'{tiledata[2]:04x}'
+            data['obj_state'] = f'{tiledata[1]:x}'
+        except IndexError as e:
+            logger.warning(f"failed to load obj data on ({x},{y}): {e}")
 
-        with open(file, "rb") as mapbin:
-            read_head = 0
-            while True:
-                data = mapbin.read(struct_size)
-                if not data:
-                    break
-                read_head += struct_size
-                percent = (read_head / self.map_file_size) * 100
-                print(f"loading map: {percent}")
-                self.data.append(struct_unpack(data))
-                # if x > 20:
-                #     break
+        return data
+
+    def from_json(self, file):
+        with open('worldmap/map.json', 'r') as mapjson:
+            self.data = json.loads(mapjson.read())
+            self.lenght = len(self.data) - 1
+
+    # def from_binary(self, file):
+    #     struct_size = struct.calcsize(MapWriter.STRUCT_FORMAT)
+    #     struct_unpack = struct.Struct(MapWriter.STRUCT_FORMAT).unpack_from
+    #     self.map_file_size = Path(file).stat().st_size
+    #     with open(file, "rb") as mapbin:
+    #         read_head = 0
+    #         while True:
+    #             data = mapbin.read(struct_size)
+    #             if not data:
+    #                 break
+    #             read_head += struct_size
+    #             percent = (read_head / self.map_file_size) * 100
+    #             print(f"loading map: {percent}")
+    #             self.data.append(struct_unpack(data))
+    #     self.dimention = len(self.data)
 
 
 if __name__ == '__main__':
-    mapreader = MapReader('map.bin')
+    mapreader = MapReader()

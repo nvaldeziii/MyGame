@@ -3,7 +3,7 @@ import math
 
 from humanoid import Player
 from display import Display
-from worldtile import WorldTile, Tile
+from worldmap.worldtile import WorldTile, Tile
 from camera import Camera
 
 logger = logging.getLogger()

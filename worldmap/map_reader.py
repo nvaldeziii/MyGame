@@ -26,7 +26,8 @@ class MapReader:
             'tile_id': '0000',
             'tile_state': '0',
             'obj_id': '0000',
-            'obj_state': '0'
+            'obj_state': '0',
+            'group' : '0'
         }
         try:
             data['tile_id'] = f'{tiledata[0]:04x}'
@@ -36,9 +37,11 @@ class MapReader:
 
         try:
             data['obj_id'] = f'{tiledata[2]:04x}'
-            data['obj_state'] = f'{tiledata[1]:x}'
+            data['obj_state'] = f'{tiledata[3]:x}'
         except IndexError as e:
             logger.warning(f"failed to load obj data on ({x},{y}): {e}")
+
+        data['group'] = f'{tiledata[4]:x}'
 
         return data
 

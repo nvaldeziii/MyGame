@@ -26,4 +26,4 @@ class Tile(Sprite):
             self.param['pixel_x'] + self.center_offset[0], self.param['pixel_y'] + self.center_offset[1])
         self.surface.blit(self.image, self.rect)
 
-        # self.render_coordinates()
+        self.render_coordinates()

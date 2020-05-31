@@ -15,6 +15,7 @@ class Display:
 
     Group = {
         'tile': pygame.sprite.Group(),
+        'wall': pygame.sprite.Group(),
         'humanoid': pygame.sprite.Group(),
         'tile_fg': pygame.sprite.Group(),
         'debug': pygame.sprite.Group(),

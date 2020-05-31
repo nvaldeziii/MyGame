@@ -5,6 +5,7 @@ import pygame
 from sprite import Sprite
 from event_handler import MouseClick
 from grid import Grid, MouseAngle, DirectionVector
+from display import Display
 
 logger = logging.getLogger()
 
@@ -32,10 +33,11 @@ class Player(Humanoid):
         self.center_px = Grid.get_pixel_coordinates(x_coordinate, y_coordinate)
 
         self.perma_coord = (x_coordinate, y_coordinate)
-        self.perma_px = Grid.get_pixel_coordinates( self.perma_coord[0], self.perma_coord[1])
+        self.perma_px = Grid.get_pixel_coordinates(
+            self.perma_coord[0], self.perma_coord[1])
         self.rect.midbottom = (self.perma_px[0], self.perma_px[1])
 
-        self.last_vector = (0,0)
+        self.last_vector = (0, 0)
 
     def update2(self):
         self.rect.midbottom = (self.center_px[0], self.center_px[1])
@@ -87,13 +89,24 @@ class Player(Humanoid):
     def get_center_pixel(self, x, y):
         return (x - (self.param['w']/2), y - self.param['h'])
 
+    def check_wall_collision(self, x, y):
+        for wall in Display.Group['wall']:
+            if wall.param['x_coordinate'] == x and wall.param['y_coordinate'] == y:
+                logger.debug(
+                    f"wall coordinate: ({wall.param['x_coordinate']},{wall.param['y_coordinate']}) vs {x},{y}")
+                return True
+        return False
+
     def delta_xy_coordinate(self, x_coordinate, y_coordinate):
-        self.param['x_coordinate'] += x_coordinate
-        self.param['y_coordinate'] += y_coordinate
-        self.get_drawpoint()
-        self.param['ready'] = False
-        self.moving = True
-        # self.animate_latidude_movement()
+        if not self.check_wall_collision(
+                self.param['x_coordinate'] + x_coordinate,
+                self.param['y_coordinate'] + y_coordinate):
+            self.param['x_coordinate'] += x_coordinate
+            self.param['y_coordinate'] += y_coordinate
+            self.get_drawpoint()
+            self.param['ready'] = False
+            self.moving = True
+            # self.animate_latidude_movement()
 
     def animate_latidude_movement(self):
         self.param['ready'] = False

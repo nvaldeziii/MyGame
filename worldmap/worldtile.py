@@ -15,12 +15,10 @@ class WorldTile:
         self.mapinfo = MapInfo()
 
         self.surface = pygame.Surface(self.mapinfo.map_px_dimention)
-        self.sprite_group = sprite_group
 
         self.surface_fg = pygame.Surface(
             self.mapinfo.map_px_dimention, pygame.SRCALPHA, 32)
         self.surface_fg = self.surface_fg.convert_alpha()
-        self.sprite_group_fg = sprite_group_fg
 
         self.topleft = [0, 0]
         self.center_coord = [6, 14]
@@ -71,17 +69,22 @@ class WorldTile:
 
                     tile_obj = Tile(self.surface_fg, obj_image, obj_offset)
                     tile_obj.update_coordinate(y, x)
-                    self.sprite_group_fg.add(tile_obj)
+                    Display.Group['tile_fg'].add(tile_obj)
                 except KeyError as e:
                     obj_id = self.obj_id['00000']
                     logger.warning(f"error loading object ({x}, {y}): {e}")
 
                 tile = Tile(self.surface, tile_image, tile_offset)
                 tile.update_coordinate(y, x)
-                self.sprite_group.add(tile)
 
-        self.sprite_group.update()
-        self.sprite_group_fg.update()
+                if tiledata['group'] == '0':
+                    Display.Group['tile'].add(tile)
+                elif tiledata['group'] == '1':
+                    Display.Group['wall'].add(tile)
+
+        Display.Group['tile'].update()
+        Display.Group['wall'].update()
+        Display.Group['tile_fg'].update()
 
     def draw(self, camera, surface):
         Display.Surface['main'].blit(surface, (camera.x, camera.y))

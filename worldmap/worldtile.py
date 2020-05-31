@@ -46,10 +46,10 @@ class WorldTile:
             tile_x_coord = tiledata[2]
             tile_y_coord = tiledata[3]
 
+            image = self.map_id[f'{tile_id:04x}{tile_state:x}']['img']
+            offset = self.map_id[f'{tile_id:04x}{tile_state:x}']['offset']
 
-            image = self.map_id[f'{tile_id:04x}{tile_state:x}']
-            tile = Tile(self.surface, image)
-
+            tile = Tile(self.surface, image, offset)
             tile.update_coordinate(tile_x_coord, tile_y_coord)
             self.sprite_group.add(tile)
 

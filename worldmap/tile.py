@@ -1,13 +1,16 @@
 from sprite import Sprite
+from display import Display
+from grid import Grid
 
 
 class Tile(Sprite):
     DEFAULT_WIDTH = 100
     DEFAULT_HEIGHT = 50
 
-    def __init__(self, surface, image):
+    def __init__(self, surface, image, center_offset=[0, 0]):
         self.tile_w = 100
         self.tile_h = 50
+        self.center_offset = center_offset
         Sprite.__init__(self, surface, image, w=self.tile_w, h=self.tile_h)
 
     def render_coordinates(self):
@@ -20,6 +23,6 @@ class Tile(Sprite):
 
     def update(self, render_coordinate=False):
         self.rect.center = (
-            self.param['pixel_x'], self.param['pixel_y'])
+            self.param['pixel_x'] + self.center_offset[0], self.param['pixel_y'] + self.center_offset[1])
         self.surface.blit(self.image, self.rect)
         # self.render_coordinates()

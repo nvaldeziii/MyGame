@@ -47,6 +47,7 @@ def redraw_screen():
         for sprite in Display.Group[group]:
             engine.camera.apply(sprite)
 
+
     # blue line from player to mouse
     if grid.visible:
         pygame.draw.line(Display.Surface['main'], (0, 0, 255),

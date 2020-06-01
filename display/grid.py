@@ -3,8 +3,8 @@ import logging
 import math
 import pygame
 
-from display import Display
-from gameparams import GameParams
+from display.display import Display
+from config.gameparams import GameParams
 
 
 logger = logging.getLogger()

@@ -1,5 +1,5 @@
 import pygame
-from gameparams import GameParams
+from config.gameparams import GameParams
 
 
 class Camera:

@@ -1,6 +1,6 @@
 from sprite.sprite import Sprite
-from display import Display
-from grid import Grid
+from display.display import Display
+from display.grid import Grid
 
 
 class Tile(Sprite):

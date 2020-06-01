@@ -2,8 +2,8 @@ import pygame
 import json
 import logging
 
-from grid import Grid
-from display import Display
+from display.grid import Grid
+from display.display import Display
 from worldmap.tile import Tile
 from worldmap.map_reader import MapReader
 

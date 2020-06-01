@@ -1,12 +1,11 @@
 import pygame
 import logging
 
-from gameparams import GameParams
+from config.gameparams import GameParams
 from sprite.sprite import Sprite
-from sprite.humanoid import Player
-from grid import Grid
+from display.grid import Grid
 from engine import Engine
-from display import Display
+from display.display import Display
 
 # temp
 import math

@@ -1,13 +1,14 @@
 import logging
 import math
 
-from sprite.humanoid import Player
-from display import Display
+from config.gameparams import GameParams
+from sprite.player import Player
+from display.camera import Camera
+from display.display import Display
 from worldmap.worldtile import WorldTile, Tile
-from camera import Camera
 
 logger = logging.getLogger()
-
+GameParams.init()
 
 class Engine:
     Interaction = True

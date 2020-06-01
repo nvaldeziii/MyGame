@@ -1,5 +1,5 @@
 import pygame
-from grid import Grid
+from display.grid import Grid
 
 
 class Sprite(pygame.sprite.Sprite):

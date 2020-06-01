@@ -31,11 +31,11 @@ class WorldTile:
         self.obj_id = self.get_obj_id()
 
     def get_map_id(self):
-        with open('sprites/tile/img_id.json', "r") as map_id:
+        with open('assets/sprites/tile/img_id.json', "r") as map_id:
             return json.loads(map_id.read())
 
     def get_obj_id(self):
-        with open('sprites/tile/obj_id.json', "r") as map_id:
+        with open('assets/sprites/tile/obj_id.json', "r") as map_id:
             return json.loads(map_id.read())
 
     def debug_obj(self):

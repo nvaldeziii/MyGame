@@ -1,0 +1,15 @@
+{
+    "00000": {
+        "img": "assets/sprites/tile/floor/placeholder_01.png",
+        "offset": [0,0]
+    },
+    "00010": {
+        "img": "assets/sprites/tile/floor/placeholder_02.png",
+        "offset": [0,0]
+    },
+    "00020": {
+        "img": "assets/sprites/tile/floor/obj_floor/block001_bg.png",
+        "offset": [0,-50],
+        "fg" : true
+    }
+}

@@ -23,7 +23,7 @@ class Sprite(pygame.sprite.Sprite):
         try:
             self.image = pygame.image.load(image)
         except pygame.error as e:
-            self.image = pygame.image.load('sprites/tile/floor/placeholder_01.png')
+            self.image = pygame.image.load('assets/sprites/tile/floor/placeholder_01.png')
             logger.warning(f"{e}")
 
         self.param['pixel_x'], self.param['pixel_y'] = Grid.get_pixel_coordinates(

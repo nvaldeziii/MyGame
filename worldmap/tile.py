@@ -1,4 +1,4 @@
-from sprite import Sprite
+from sprite.sprite import Sprite
 from display import Display
 from grid import Grid
 

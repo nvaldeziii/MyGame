@@ -2,8 +2,8 @@ import pygame
 import logging
 
 from gameparams import GameParams
-from sprite import Sprite
-from humanoid import Player
+from sprite.sprite import Sprite
+from sprite.humanoid import Player
 from grid import Grid
 from engine import Engine
 from display import Display
@@ -23,7 +23,7 @@ grid = Grid()
 engine = Engine()
 
 Display.Font.update({
-    'debug': pygame.font.Font('font/AnonymousPro-Regular.ttf', 12)
+    'debug': pygame.font.Font('assets/font/AnonymousPro-Regular.ttf', 12)
 })
 
 

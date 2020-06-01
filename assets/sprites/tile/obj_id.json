@@ -1,0 +1,14 @@
+{
+    "00000": {
+        "img": "assets/sprites/tile/object/placeholder_01.png",
+        "offset": [0,0]
+    },
+    "00010": {
+        "img": "assets/sprites/tile/object/tree_001.png",
+        "offset": [0,-50]
+    },
+    "00020": {
+        "img": "assets/sprites/tile/object/block001_fg.png",
+        "offset": [0,-50]
+    }
+}

@@ -2,7 +2,7 @@ import logging
 import math
 import pygame
 
-from sprite import Sprite
+from sprite.sprite import Sprite
 from event_handler import MouseClick
 from grid import Grid, MouseAngle, Direction
 from display import Display

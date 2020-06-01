@@ -1,7 +1,7 @@
 import logging
 import math
 
-from humanoid import Player
+from sprite.humanoid import Player
 from display import Display
 from worldmap.worldtile import WorldTile, Tile
 from camera import Camera
@@ -14,7 +14,7 @@ class Engine:
 
     def __init__(self):
         self.player = Player(
-            Display.Surface['main'], 'sprites/character/player/warrior_m.png',
+            Display.Surface['main'], 'assets/sprites/character/player/warrior_m.png',
             x_coordinate=6, y_coordinate=14)
         self.mouse_pos = None
 

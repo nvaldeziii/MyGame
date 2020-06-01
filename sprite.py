@@ -36,7 +36,6 @@ class Sprite(pygame.sprite.Sprite):
         raise NotImplementedError()
 
     def get_drawpoint(self):
-        # self.param['old_coordinate'] = (self.param['pixel_x'], self.param['pixel_y'])
         (self.param['pixel_x'], self.param['pixel_y']) = Grid.get_pixel_coordinates(
             self.param['x_coordinate'], self.param['y_coordinate'])
 

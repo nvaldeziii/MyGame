@@ -69,8 +69,7 @@ def mouse_listener(keys):
                 engine.mouse_pos[0], engine.mouse_pos[1],
                 engine.player.perma_px[0], engine.player.perma_px[1]
             ) > 50:
-                movement = engine.player.player_move(engine.mouse_pos)
-                engine.player.delta_xy_coordinate(movement[0], movement[1])
+                engine.player.move_by_mouse(engine.mouse_pos)
                 engine.camera.update_tile_offset(engine.player)
 
 
@@ -111,7 +110,7 @@ while True:
 
     grid.debug_obj.update({
         'player': engine.player.param,
-        'player_debug': engine.player.debug_obj,
+        'player_debug': engine.player.debug_obj(),
         'mouse': {'pos': engine.mouse_pos},
         'engine.world_tile': engine.world_tile.debug_obj(),
         'camera' : engine.camera.debug_obj()

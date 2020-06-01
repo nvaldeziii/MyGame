@@ -10,16 +10,16 @@ from gameparams import GameParams
 logger = logging.getLogger()
 
 
-class DirectionVector:
-    RIGHT = [1, 0]
-    UP_RIGHT = [1, -1]
-    UP = [0, -2]
-    UP_LEFT = [-1, -1]
-    LEFT = [-1, 0]
-    DOWN_LEFT = [-1, 1]
-    DOWN = [0, 2]
-    DOWN_RIGHT = [1, 1]
-    CENTER = [0, 0]
+class Direction:
+    LEFT = 0
+    UP_LEFT = 1
+    UP = 2
+    DOWN_LEFT = 3
+    CENTER = 4
+    UP_RIGHT = 5
+    DOWN = 6
+    DOWN_RIGHT = 7
+    RIGHT = 8
 
 
 class MouseAngle:
@@ -199,24 +199,24 @@ class Grid:
     @staticmethod
     def get_direction_from_point_and_angle(angle):
         if MouseAngle.RIGHT[0] > angle and angle > MouseAngle.RIGHT[1]:
-            return copy.deepcopy(DirectionVector.RIGHT)
+            return Direction.RIGHT
         elif MouseAngle.DOWN_RIGHT[0] < angle and angle < MouseAngle.DOWN_RIGHT[1]:
-            return copy.deepcopy(DirectionVector.DOWN_RIGHT)
+            return Direction.DOWN_RIGHT
         elif MouseAngle.DOWN[0] < angle and angle < MouseAngle.DOWN[1]:
-            return copy.deepcopy(DirectionVector.DOWN)
+            return Direction.DOWN
         elif MouseAngle.DOWN_LEFT[0] < angle and angle < MouseAngle.DOWN_LEFT[1]:
-            return copy.deepcopy(DirectionVector.DOWN_LEFT)
+            return Direction.DOWN_LEFT
         elif ((MouseAngle.LEFT[2] <= angle and angle < MouseAngle.LEFT[3])
               or (MouseAngle.LEFT[0] >= angle and angle > MouseAngle.LEFT[1])):
-            return copy.deepcopy(DirectionVector.LEFT)
+            return Direction.LEFT
         elif MouseAngle.UP_LEFT[0] > angle and angle > MouseAngle.UP_LEFT[1]:
-            return copy.deepcopy(DirectionVector.UP_LEFT)
+            return Direction.UP_LEFT
         elif MouseAngle.UP[0] > angle and angle > MouseAngle.UP[1]:
-            return copy.deepcopy(DirectionVector.UP)
+            return Direction.UP
         elif MouseAngle.UP_RIGHT[0] > angle and angle > MouseAngle.UP_RIGHT[1]:
-            return copy.deepcopy(DirectionVector.UP_RIGHT)
+            return Direction.UP_RIGHT
         else:
-            return copy.deepcopy(DirectionVector.CENTER)
+            return Direction.CENTER
 
     @staticmethod
     def get_all_coordinates_around(origin):
@@ -230,7 +230,7 @@ class Grid:
         vectors[1] = (x if y % 2 != 0 else x - 1, y - 1)
 
         # up
-        vectors[2] = (x, y-1)
+        vectors[2] = (x, y-2)
 
         # downleft
         vectors[3] = (x if y % 2 != 0 else x - 1, y + 1)
@@ -242,7 +242,7 @@ class Grid:
         vectors[5] = (x if y % 2 == 0 else x + 1, y - 1)
 
         # down
-        vectors[6] = (x, y+1)
+        vectors[6] = (x, y+2)
 
         # down right
         vectors[7] = (x if y % 2 == 0 else x + 1, y + 1)
@@ -253,18 +253,9 @@ class Grid:
         return vectors
 
     @staticmethod
-    def get_absolute_direction_from_current_point(y_coordinate, direction):
-
-        logger.debug(f"direction: {direction}")
-        if direction == DirectionVector.DOWN_RIGHT:
-            x = 0 if y_coordinate % 2 == 0 else 1
-        elif direction == DirectionVector.DOWN_LEFT:
-            x = 0 if y_coordinate % 2 != 0 else -1
-        elif direction == DirectionVector.UP_RIGHT:
-            x = 0 if y_coordinate % 2 == 0 else 1
-        elif direction == DirectionVector.UP_LEFT:
-            x = 0 if y_coordinate % 2 != 0 else -1
-        else:
-            x = direction[0]
-
-        return (x, direction[1])
+    def get_absolute_direction_from_current_point(origin, direction):
+        '''Parameters:
+            origin: accepts an array of 8 from -> Grid.get_all_coordinates_around
+            direction: direction to move from -> direction.Direction
+        '''
+        return origin[direction]

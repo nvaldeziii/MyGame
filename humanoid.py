@@ -89,18 +89,42 @@ class Player(Humanoid):
     def get_center_pixel(self, x, y):
         return (x - (self.param['w']/2), y - self.param['h'])
 
-    def check_wall_collision(self, x, y):
+    def is_wall(self, wall, point):
+        if wall.param['x_coordinate'] == point[0] and wall.param['y_coordinate'] == point[1]:
+            logger.debug(
+                f"wall coordinate: ({wall.param['x_coordinate']}, \
+                {wall.param['y_coordinate']}) vs {point[0]},{point[1]}")
+            return True
+        return False
+
+    def check_wall_collision(self, dx, dy):
+        x = self.param['x_coordinate'] + dx
+        y = self.param['y_coordinate'] + dy
+
         for wall in Display.Group['wall']:
-            if wall.param['x_coordinate'] == x and wall.param['y_coordinate'] == y:
-                logger.debug(
-                    f"wall coordinate: ({wall.param['x_coordinate']},{wall.param['y_coordinate']}) vs {x},{y}")
+
+            if self.is_wall(wall, (x,y)):
                 return True
+
+            self.coordinates_around[1]
+
+            if self.last_direction == DirectionVector.LEFT:
+                if self.is_wall(wall, self.coordinates_around[1]) or self.is_wall(wall, self.coordinates_around[3]):
+                    return True
+            elif self.last_direction == DirectionVector.RIGHT:
+                if self.is_wall(wall, self.coordinates_around[5]) or self.is_wall(wall, self.coordinates_around[7]):
+                    return True
+            elif self.last_direction == DirectionVector.UP:
+                if self.is_wall(wall, self.coordinates_around[1]) or self.is_wall(wall, self.coordinates_around[5]):
+                    return True
+            elif self.last_direction == DirectionVector.DOWN:
+                if self.is_wall(wall, self.coordinates_around[3]) or self.is_wall(wall, self.coordinates_around[7]):
+                    return True
+
         return False
 
     def delta_xy_coordinate(self, x_coordinate, y_coordinate):
-        if not self.check_wall_collision(
-                self.param['x_coordinate'] + x_coordinate,
-                self.param['y_coordinate'] + y_coordinate):
+        if not self.check_wall_collision(x_coordinate, y_coordinate):
             self.param['x_coordinate'] += x_coordinate
             self.param['y_coordinate'] += y_coordinate
             self.get_drawpoint()
@@ -126,17 +150,15 @@ class Player(Humanoid):
         )
         self.debug_obj.update({'MouseTheta': angle})
 
-        self.last_vector = Grid.get_direction_from_point_and_angle(angle)
+        self.last_direction = Grid.get_direction_from_point_and_angle(angle)
 
-        logger.debug(f"get_direction_from_point_and_angle: {self.last_vector}")
-        if self.last_vector == DirectionVector.DOWN_RIGHT:
-            self.last_vector[0] = 0 if self.param['y_coordinate'] % 2 == 0 else 1
-        elif self.last_vector == DirectionVector.DOWN_LEFT:
-            self.last_vector[0] = 0 if self.param['y_coordinate'] % 2 != 0 else -1
-        elif self.last_vector == DirectionVector.UP_RIGHT:
-            self.last_vector[0] = 0 if self.param['y_coordinate'] % 2 == 0 else 1
-        elif self.last_vector == DirectionVector.UP_LEFT:
-            self.last_vector[0] = 0 if self.param['y_coordinate'] % 2 != 0 else -1
+        self.last_vector = Grid.get_absolute_direction_from_current_point(
+            self.param['y_coordinate'], self.last_direction
+        )
+
+        self.coordinates_around = Grid.get_all_coordinates_around(
+            [self.param['x_coordinate'], self.param['y_coordinate']]
+        )
 
         logger.debug(f"self.last_vector: {self.last_vector}")
         return self.last_vector

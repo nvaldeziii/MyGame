@@ -63,7 +63,10 @@ class WorldTile:
                 tile_offset = map_id['offset']
 
                 try:
-                    obj_id = self.obj_id[f'{tiledata["obj_id"]}{tiledata["obj_state"]}']
+                    if map_id['fg']:
+                        obj_id = self.obj_id[f'{tiledata["tile_id"]}{tiledata["tile_state"]}']
+                    else:
+                        obj_id = self.obj_id[f'{tiledata["obj_id"]}{tiledata["obj_state"]}']
                     obj_image = obj_id['img']
                     obj_offset = obj_id['offset']
 

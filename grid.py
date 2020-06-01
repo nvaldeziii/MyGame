@@ -19,7 +19,7 @@ class DirectionVector:
     DOWN_LEFT = [-1, 1]
     DOWN = [0, 2]
     DOWN_RIGHT = [1, 1]
-    CENTER = [0,0]
+    CENTER = [0, 0]
 
 
 class MouseAngle:
@@ -36,7 +36,7 @@ class MouseAngle:
 class Grid:
     ANGLE1 = -0.4636476093997
     ANGLE2 = -1 * ANGLE1
-    ORIGIN = [70,40]
+    ORIGIN = [70, 40]
 
     def __init__(self):
         self.surface = Display.Surface['grid']
@@ -108,7 +108,8 @@ class Grid:
         text_color = (0, 0, 0)
         bg_color = (255, 255, 255)
         for item in obj:
-            text = Display.Font['debug'].render(f' {item} ', True, text_color, bg_color)
+            text = Display.Font['debug'].render(
+                f' {item} ', True, text_color, bg_color)
             textRect = text.get_rect()
             textRect.midleft = (x, y + (padding*line))
             self.surface.blit(text, textRect)
@@ -206,7 +207,7 @@ class Grid:
         elif MouseAngle.DOWN_LEFT[0] < angle and angle < MouseAngle.DOWN_LEFT[1]:
             return copy.deepcopy(DirectionVector.DOWN_LEFT)
         elif ((MouseAngle.LEFT[2] <= angle and angle < MouseAngle.LEFT[3])
-            or (MouseAngle.LEFT[0] >= angle and angle > MouseAngle.LEFT[1])):
+              or (MouseAngle.LEFT[0] >= angle and angle > MouseAngle.LEFT[1])):
             return copy.deepcopy(DirectionVector.LEFT)
         elif MouseAngle.UP_LEFT[0] > angle and angle > MouseAngle.UP_LEFT[1]:
             return copy.deepcopy(DirectionVector.UP_LEFT)
@@ -216,3 +217,54 @@ class Grid:
             return copy.deepcopy(DirectionVector.UP_RIGHT)
         else:
             return copy.deepcopy(DirectionVector.CENTER)
+
+    @staticmethod
+    def get_all_coordinates_around(origin):
+        vectors = [None]*9
+        x = origin[0]
+        y = origin[1]
+        # left
+        vectors[0] = (x - 1, y)
+
+        # upleft
+        vectors[1] = (x if y % 2 != 0 else x - 1, y - 1)
+
+        # up
+        vectors[2] = (x, y-1)
+
+        # downleft
+        vectors[3] = (x if y % 2 != 0 else x - 1, y + 1)
+
+        # center
+        vectors[4] = origin
+
+        # upright
+        vectors[5] = (x if y % 2 == 0 else x + 1, y - 1)
+
+        # down
+        vectors[6] = (x, y+1)
+
+        # down right
+        vectors[7] = (x if y % 2 == 0 else x + 1, y + 1)
+
+        # right
+        vectors[8] = (x + 1, y)
+
+        return vectors
+
+    @staticmethod
+    def get_absolute_direction_from_current_point(y_coordinate, direction):
+
+        logger.debug(f"direction: {direction}")
+        if direction == DirectionVector.DOWN_RIGHT:
+            x = 0 if y_coordinate % 2 == 0 else 1
+        elif direction == DirectionVector.DOWN_LEFT:
+            x = 0 if y_coordinate % 2 != 0 else -1
+        elif direction == DirectionVector.UP_RIGHT:
+            x = 0 if y_coordinate % 2 == 0 else 1
+        elif direction == DirectionVector.UP_LEFT:
+            x = 0 if y_coordinate % 2 != 0 else -1
+        else:
+            x = direction[0]
+
+        return (x, direction[1])

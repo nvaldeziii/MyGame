@@ -34,7 +34,7 @@ class Camera:
 
     def update(self, player):
         self.x = -player.param['pixel_x'] + \
-            int(GameParams.Window.Width / 2) + 30
+            int(GameParams.config['window']['resolution']['width'] / 2) + 30
         self.y = -player.param['pixel_y'] + \
-            int(GameParams.Window.Height / 2) + 30
+            int(GameParams.config['window']['resolution']['height'] / 2) + 30
         self.update_cam_coordinate(self.x, self.y)

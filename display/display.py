@@ -8,8 +8,8 @@ class Display:
     }
 
     Surface = {
-        'main': pygame.display.set_mode(GameParams.Window.get_tuple_size()),
-        'grid': pygame.Surface(GameParams.Window.get_tuple_size(), pygame.SRCALPHA, 32)
+        'main': pygame.display.set_mode(GameParams.window_tuple),
+        'grid': pygame.Surface(GameParams.window_tuple, pygame.SRCALPHA, 32)
     }
     Surface['grid'] = Surface['grid'].convert_alpha()
 

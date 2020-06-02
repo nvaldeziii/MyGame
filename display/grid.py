@@ -63,7 +63,7 @@ class Grid:
                 self._render_debug(self.debug_obj)
 
     def _get_point2(self, point, slope):
-        dx = point[0] + GameParams.Window.Width
+        dx = point[0] + GameParams.config['window']['resolution']['width']
         b = point[1] - slope * point[0]
         return (dx, slope * dx + b)
 

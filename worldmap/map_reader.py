@@ -46,9 +46,12 @@ class MapReader:
         return data
 
     def from_json(self, file):
+        logger.debug("loading map data")
         with open('worldmap/map.json', 'r') as mapjson:
             self.data = json.loads(mapjson.read())
             self.lenght = len(self.data) - 1
+            self.height = len(self.data[0]) - 1
+        logger.debug("done...")
 
     # def from_binary(self, file):
     #     struct_size = struct.calcsize(MapWriter.STRUCT_FORMAT)

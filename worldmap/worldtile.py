@@ -30,6 +30,8 @@ class WorldTile:
         self.map_id = self.get_map_id()
         self.obj_id = self.get_obj_id()
 
+        self.load_percent = 0
+
     def get_map_id(self):
         with open('assets/sprites/tile/img_id.json', "r") as map_id:
             return json.loads(map_id.read())
@@ -45,10 +47,13 @@ class WorldTile:
         }
 
     def generate_area(self):
+        size = self.mapinfo.tiles.lenght * self.mapinfo.tiles.height
+        count = 0
         for x in range(0, self.mapinfo.tiles.lenght):
-            for y in range(0, self.mapinfo.tiles.lenght):
-                percent = ((x+1)*(y+1)) / len(self.mapinfo.tiles.data) * 100
-                print(f"rendering tile: {percent}")
+            for y in range(0, self.mapinfo.tiles.height):
+                self.load_percent = f'{count / size:.00%}'
+                logger.debug(f"rendering tile: {self.load_percent}")
+                count += 1
 
                 tiledata = MapReader.tile_disector(
                     self.mapinfo.tiles.data[x][y], x, y)
@@ -57,7 +62,7 @@ class WorldTile:
                     map_id = self.map_id[f'{tiledata["tile_id"]}{tiledata["tile_state"]}']
                 except KeyError as e:
                     map_id = self.map_id['00000']
-                    logger.warning(f"error loading tile ({x}, {y}): {e}")
+                    logger.warning(f"error mapping tile ({x}, {y}): {e}")
 
                 tile_image = map_id['img']
                 tile_offset = map_id['offset']
@@ -75,7 +80,7 @@ class WorldTile:
                     Display.Group['tile_fg'].add(tile_obj)
                 except KeyError as e:
                     obj_id = self.obj_id['00000']
-                    logger.warning(f"error loading object ({x}, {y}): {e}")
+                    # logger.warning(f"error mapping object ({x}, {y}): {e}")
 
                 tile = Tile(self.surface, tile_image, tile_offset)
                 tile.update_coordinate(y, x)

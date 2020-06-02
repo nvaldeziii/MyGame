@@ -1,8 +1,12 @@
 {
-    "Window" : {
-        "Resolution" : {
-            "Width" : 1280,
-            "Height" : 720
+    "window" : {
+        "resolution" : {
+            "width" : 1280,
+            "height" : 720
         }
+    },
+    "clock" : 60,
+    "player" : {
+        "minimun_mouse_distance" : 50
     }
 }

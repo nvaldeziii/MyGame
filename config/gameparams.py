@@ -1,23 +1,22 @@
 import json
 
 class GameParams:
-    @staticmethod
-    def init(file = 'config/config.json'):
-        with open(file, 'r') as config_file:
-            GameParams.Config = json.loads(config_file.read())
-        GameParams.Window.Width = GameParams.Config['Window']['Resolution']['Width']
-        GameParams.Window.Height = GameParams.Config['Window']['Resolution']['Height']
+    initiated = False
+    @classmethod
+    def init(cls, file='config/config.json', re_init=False):
+        if not cls.initiated or re_init:
+            with open(file, 'r') as config_file:
+                cls.config = json.loads(config_file.read())
 
-    class Window:
-        Width = 1280
-        Height = 720
+            cls.init_window()
+            cls.initiated = True
 
-        @staticmethod
-        def get_tuple_size():
-            return (GameParams.Window.Width, GameParams.Window.Height)
+    @classmethod
+    def init_window(cls):
+        cls.window = cls.config['window']
+        cls.window_tuple = (
+            cls.config['window']['resolution']['width'],
+            cls.config['window']['resolution']['height']
+        )
 
-        @staticmethod
-        def get_aspect():
-            return GameParams.Window.Width/GameParams.Window.Height
-
-
+GameParams.init()

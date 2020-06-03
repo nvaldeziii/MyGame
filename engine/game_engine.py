@@ -25,7 +25,7 @@ class GameEngine(Engine):
         self.grid.debug_obj.update({
             'player': self.player.param,
             'player_debug': self.player.debug_obj(),
-            'mouse': {'pos': self.mouse_pos},
+            'mouse': {'pos': self.mouse_motion_pos},
             'world_tile': self.world_tile.debug_obj(),
             'camera': self.camera.debug_obj()
         })
@@ -54,7 +54,7 @@ class GameEngine(Engine):
             pygame.draw.line(Display.Surface['main'], (0, 0, 255),
                              (self.player.perma_px[0],
                               self.player.perma_px[1]),
-                             self.mouse_pos, 4
+                             self.mouse_motion_pos, 4
                              )
 
         self.grid.draw()
@@ -71,4 +71,4 @@ class GameEngine(Engine):
             logger.debug(f"Cliked on: {pos}")
 
         if event.type == pygame.MOUSEMOTION:
-            self.mouse_pos = event.pos
+            self.mouse_motion_pos = event.pos

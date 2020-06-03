@@ -21,7 +21,7 @@ class WorldTile:
         self.surface_fg = self.surface_fg.convert_alpha()
 
         self.topleft = [0, 0]
-        self.center_coord = [6, 14]
+
         self.screen_lenght_x = 14
         self.screen_lenght_y = 28
         self.pixel_x = 0
@@ -43,7 +43,6 @@ class WorldTile:
     def debug_obj(self):
         return {
             'topleft': self.topleft,
-            'center_coord': self.center_coord,
         }
 
     def generate_area(self):

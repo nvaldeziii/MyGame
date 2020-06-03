@@ -73,14 +73,14 @@ class Grid:
         color = (0, 255, 0)  # green
 
         point = (0, 0)
-        while point[1] < GameParams.Window.Height * 2:
+        while point[1] < GameParams.config['window']['resolution']['height'] * 2:
             point2 = self._get_point2(point, math.tan(Grid.ANGLE1))
             pygame.draw.line(self.surface, color,  point,
                              point2, line_thickness)
             point = (point[0], point[1] + self.grid_thickness)
 
-        point = (0, -GameParams.Window.Height)
-        while point[1] < GameParams.Window.Height:
+        point = (0, -GameParams.config['window']['resolution']['height'])
+        while point[1] < GameParams.config['window']['resolution']['height']:
             point2 = self._get_point2(point, math.tan(Grid.ANGLE2))
             pygame.draw.line(self.surface, color,  point,
                              point2, line_thickness)

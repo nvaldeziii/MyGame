@@ -9,7 +9,7 @@ class Sprite(pygame.sprite.Sprite):
         self.param = {
             'x_coordinate': x_coordinate,
             'y_coordinate': y_coordinate,
-            'old_coordinate': (0,0),
+            'old_coordinate': (0, 0),
             'w': w,
             'h': h,
             'ready': True,
@@ -23,16 +23,18 @@ class Sprite(pygame.sprite.Sprite):
         try:
             self.image = pygame.image.load(image)
         except pygame.error as e:
-            self.image = pygame.image.load('assets/sprites/tile/floor/placeholder_01.png')
+            self.image = pygame.image.load(
+                'assets/sprites/tile/floor/placeholder_01.png')
             logger.warning(f"{e}")
 
         self.param['pixel_x'], self.param['pixel_y'] = Grid.get_pixel_coordinates(
             self.param['x_coordinate'], self.param['y_coordinate'])
-        (self.param['x_final'], self.param['y_final']) = (self.param['pixel_x'], self.param['pixel_y'])
+        (self.param['x_final'], self.param['y_final']) = (
+            self.param['pixel_x'], self.param['pixel_y'])
 
         self.get_drawpoint()
 
-    def camera_draw(self):
+    def update_rect(self, dx, dy):
         raise NotImplementedError()
 
     def get_drawpoint(self):
@@ -40,8 +42,8 @@ class Sprite(pygame.sprite.Sprite):
             self.param['x_coordinate'], self.param['y_coordinate'])
 
     def update(self):
-        self.rect.center=(self.param['pixel_x'], self.param['pixel_y'])
-        pygame.draw.rect(self.surface, (255, 0, 0),self.rect)
+        self.rect.center = (self.param['pixel_x'], self.param['pixel_y'])
+        pygame.draw.rect(self.surface, (255, 0, 0), self.rect)
 
     def update_coordinate(self, x_coordinate, y_coordinate):
         self.param['x_coordinate'] = x_coordinate

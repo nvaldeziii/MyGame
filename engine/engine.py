@@ -14,16 +14,22 @@ logger = logging.getLogger()
 
 class Engine:
     def __init__(self):
-        self.mouse_pos = None
+        self.mouse_motion_pos = (0,0)
+        self.mouse_btnup_pos = (0,0)
+        self.mouse_btndwn_pos = (0,0)
 
         self.world_tile = WorldTile(
-            Display.Group['tile'], Display.Group['tile_fg'])
+            Display.Group['tile'], Display.Group['tile_fg']
+        )
 
-        self.camera = Camera(self.world_tile.screen_lenght_x * Tile.DEFAULT_WIDTH,
-                             self.world_tile.screen_lenght_y * Tile.DEFAULT_HEIGHT)
+        self.camera = Camera(
+            GameParams.config['window']['resolution']['width'],
+            GameParams.config['window']['resolution']['height']
+        )
 
         self.clock = pygame.time.Clock()
         self.grid = Grid()
+
         self._init_fonts()
 
     def _init_fonts(self):
@@ -32,11 +38,7 @@ class Engine:
         })
 
     def update_debug_obj(self):
-        self.grid.debug_obj.update({
-            'mouse': {'pos': self.mouse_pos},
-            'world_tile': self.world_tile.debug_obj(),
-            'camera': self.camera.debug_obj()
-        })
+        raise NotImplementedError()
 
     def initialize_world(self):
         raise NotImplementedError()

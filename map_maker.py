@@ -8,6 +8,7 @@ from engine.mapmaker_engine import MapMakerEngine
 from display.display import Display
 
 
+
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
 
@@ -17,6 +18,7 @@ pygame.display.set_caption("gamename")
 
 engine = MapMakerEngine()
 
+from engine.window.textbox import TextBox
 
 camera_movement_sensitivity = .05
 
@@ -27,7 +29,6 @@ def mouse_listener(keys):
             engine.mouse_motion_pos[0]-engine.mouse_btndwn_pos[0]) * camera_movement_sensitivity
         engine.display_rect.param['pixel_y'] -= (
             engine.mouse_motion_pos[1]-engine.mouse_btndwn_pos[1]) * camera_movement_sensitivity
-
 
 if __name__ == '__main__':
     engine.initialize_world()

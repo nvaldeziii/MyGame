@@ -1,0 +1,5 @@
+class Interupt:
+    EXIT = 0x0000
+    CONTINUE = 0x0001
+    CONSOLE_INPUT = 0x0010
+    TEXTBOX_ENTER = 0x0020

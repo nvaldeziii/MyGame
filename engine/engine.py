@@ -8,15 +8,18 @@ from display.camera import Camera
 from display.display import Display
 from display.grid import Grid
 from worldmap.worldtile import WorldTile, Tile
+from engine.window.textbox import TextBox
+from engine.interupt import Interupt
 
 logger = logging.getLogger()
-
 
 class Engine:
     def __init__(self):
         self.mouse_motion_pos = (0,0)
         self.mouse_btnup_pos = (0,0)
         self.mouse_btndwn_pos = (0,0)
+
+        self.interupt = Interupt.EXIT
 
         self.world_tile = WorldTile(
             Display.Group['tile'], Display.Group['tile_fg']
@@ -31,6 +34,14 @@ class Engine:
         self.grid = Grid()
 
         self._init_fonts()
+
+        self.windows = {
+            'console' : TextBox(Display.Surface['main'], 0, 0, 140, 32)
+        }
+
+        self.windows_list = [
+            'console'
+        ]
 
     def _init_fonts(self):
         Display.Font.update({
@@ -48,3 +59,8 @@ class Engine:
 
     def events_handler(self, event):
         raise NotImplementedError()
+
+    def set_interupt(self, i):
+        '''# interrupts
+            #  0x1 main text input'''
+        self.interupt = i

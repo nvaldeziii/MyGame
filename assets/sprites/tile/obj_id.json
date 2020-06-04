@@ -10,5 +10,13 @@
     "00020": {
         "img": "assets/sprites/tile/object/block001_fg.png",
         "offset": [0,-50]
+    },
+    "00030": {
+        "img": 0,
+        "offset": [0,-50]
+    },
+    "00040": {
+        "img": "assets/sprites/tile/floor/obj_floor/tree001_fg.png",
+        "offset": [0,-50]
     }
 }

@@ -66,12 +66,13 @@ class MapMakerEngine(Engine):
         elif event.type == pygame.MOUSEBUTTONUP:
             self.mouse_btnup_pos = event.pos
             if event.button == 3:
-                for tile in Display.Group['tile']:
-                    if tile.param['x_coordinate'] == 6 and tile.param['y_coordinate'] == 14:
-                        tile.update_rect(self.camera.x, self.camera.y)
-                        pygame.draw.rect(tile.surface, (0, 255, 0), (self.camera.x,self.camera.y, 10 ,10), 0)
-                        pygame.draw.rect(tile.surface, (0, 255, 0), tile.rect, 0)
-                        pygame.draw.rect(tile.surface, (0, 0, 0), tile.hitbox, 0)
+                pass
+                # for tile in Display.Group['tile']:
+                #     if tile.param['x_coordinate'] == 6 and tile.param['y_coordinate'] == 14:
+                #         tile.update_rect(self.camera.x, self.camera.y)
+                #         pygame.draw.rect(tile.surface, (0, 255, 0), (self.camera.x,self.camera.y, 10 ,10), 0)
+                #         pygame.draw.rect(tile.surface, (0, 255, 0), tile.rect, 0)
+                #         pygame.draw.rect(tile.surface, (0, 0, 0), tile.hitbox, 0)
 
         if event.type == pygame.MOUSEMOTION:
             self.mouse_motion_pos = event.pos

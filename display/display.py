@@ -20,3 +20,6 @@ class Display:
         'tile_fg': pygame.sprite.Group(),
         'debug': pygame.sprite.Group(),
     }
+
+    # Surface['main'] = pygame.transform.smoothscale(Surface['main'], (1024, 768))
+

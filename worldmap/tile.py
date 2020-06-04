@@ -33,9 +33,6 @@ class Tile(Sprite):
         self.surface.blit(text, text_rect)
 
     def update_rect(self, dx, dy):
-        print(f"px: {self.param['pixel_x']}, py: {self.param['pixel_y']}")
-        print(f"dx: {dx}, dy: {dy}")
-        print(f"x: {self.param['pixel_x'] + self.center_offset[0] + dx}, y: {self.param['pixel_y'] + self.center_offset[1] + dy}")
         self.rect.center = (
             self.param['pixel_x'] + self.center_offset[0] + dx, self.param['pixel_y'] + self.center_offset[1] + dy)
         self.adjust_hitbox()

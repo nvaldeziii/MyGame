@@ -1,6 +1,9 @@
 import pygame
+import logging
 from display.grid import Grid
 
+
+logger = logging.getLogger()
 
 class Sprite(pygame.sprite.Sprite):
     def __init__(self, surface, image, x_coordinate=0, y_coordinate=0, w=64, h=64, ):
